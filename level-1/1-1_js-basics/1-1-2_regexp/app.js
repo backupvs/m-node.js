@@ -5,8 +5,14 @@ const Validator = {
     },
 
     validatePhone(string) {
+        if (string.length >= 25) return false;
         const phonePattern = /^([\s-]*\+[\s-]*3[\s-]*8[\s-]*)?[\s-]*\(?([\s-]*0[\s-]*\d[\s-]*\d[\s-]*)\)?([\s-]*\d{1}[\s-]*\d{1}[\s-]*\d{1}[\s-]*\d{1}[\s-]*\d{1}[\s-]*\d{1}[\s-]*\d{1}[\s-]*)$/g;
         return phonePattern.test(string);
+    },
+
+    validatePassword(string) {
+        const passwordPattern = /^(?=.*[a-z])(?=.*[a-z])(?=.+[0-9])[a-zA-Z0-9_]{8,}$/;
+        return passwordPattern.test(string);
     }
 }
 
@@ -39,10 +45,24 @@ const phones = [
     "+48 (0989) 567 8901"
 ];
 
+const passwords = [
+    /* Valid */
+    "C00l_Pass",
+    "SupperPas1",
+
+    /* Invalid */
+    "Cool_pass",
+    "C00l"
+];
+
 for (let email of emails) {
-    console.log((Validator.validateEmail(email) ? "[+] " : "[-] ") + email);
+    console.log((Validator.validateEmail(email) ? "[VALID] " : "[INVALID] ") + email);
 }
 
 for (let phone of phones) {
-    console.log((Validator.validatePhone(phone) ? "[+] " : "[-] ") + phone);
+    console.log((Validator.validatePhone(phone) ? "[VALID] " : "[INVALID] ") + phone);
+}
+
+for (let password of passwords) {
+    console.log((Validator.validatePassword(password) ? "[VALID] " : "[INVALID] ") + password);
 }
