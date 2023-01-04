@@ -1,4 +1,8 @@
-// Product constructor
+/**
+ * Product.
+ * 
+ * @class Product
+ */
 function Product(ID, name, description, price, brand, sizes, activeSize, quantity, date, reviews, images) {
     this.ID = ID;
     this.name = name;
@@ -12,7 +16,7 @@ function Product(ID, name, description, price, brand, sizes, activeSize, quantit
     this.reviews = reviews;
     this.images = images;
 
-    // Getters
+    /* Getters */
     this.getID = () => this.ID;
     this.getName = () => this.name;
     this.getDescription = () => this.description;
@@ -25,7 +29,7 @@ function Product(ID, name, description, price, brand, sizes, activeSize, quantit
     this.getReviews = () => this.reviews;
     this.getImages = () => this.images;
 
-    // Setters
+    /* Setters */
     this.setID = newID => this.ID = newID;
     this.setName = newName => this.name = newName;
     this.setDescription = newDescription => this.description = newDescription;
@@ -38,36 +42,77 @@ function Product(ID, name, description, price, brand, sizes, activeSize, quantit
     this.setReviews = newReviews => this.reviews = newReviews;
     this.setImages = newImages => this.images = newImages;
 
+    /**
+     *  Get review by ID.
+     * 
+     * @param {number} requestedId
+     * @returns {Review} Found review.
+     */
     this.getReviewByID = function(requestedId) {
         return this.reviews.find(review => review.ID === requestedId);
     }
 
+    /**
+     * Gets image by name.
+     * 
+     * @param {string} requestedImage
+     * @returns {string} Found image.
+     */
     this.getImage = function(requestedImage) {
         return requestedImage ? this.images.find(image => image === requestedImage) : images[0];
     }
 
+    /**
+     * Adds size.
+     * 
+     * @param {string} sizeToAdd 
+     */
     this.addSize = function(sizeToAdd) {
         this.sizes.push(sizeToAdd);
     }
 
+    /**
+     * Deletes size by name.
+     * 
+     * @param {string} sizeToDelete 
+     */
     this.deleteSize = function(sizeToDelete) {
         this.sizes = this.sizes.filter(size => size !== sizeToDelete);
     } 
 
+    /**
+     * Adds Review object.
+     * 
+     * @param {Review} reviewToAdd
+     */
     this.addReview = function(reviewToAdd) {
         this.reviews.push(reviewToAdd);
     }
 
+    /**
+     * Deletes Review by ID.
+     * 
+     * @param {number} reviewID
+     */
     this.deleteReview = function(reviewID) {
         this.reviews = this.reviews.filter(review => review.ID !== reviewID);
     }
 
+    /**
+     * Returns average rating of all reviews.
+     * 
+     * @returns {number} Average rating.
+     */
     this.getAverageRating = function() {
         return this.reviews.reduce((total, review) => total + review.getAverageRating(), 0) / reviews.length;
     }
 }
 
-// Review constructor
+/**
+ * Review.
+ * 
+ * @class Review
+ */
 function Review(ID, author, date, comment, rating) {
     this.ID = ID;
     this.author = author;
@@ -81,7 +126,7 @@ function Review(ID, author, date, comment, rating) {
     }
 }
 
-// Creating a products
+/* Creating a products */
 const product1 = new Product(
     0,
     "T-shirt",
@@ -110,7 +155,7 @@ const product2 = new Product(
     ["p2_image1"]
 );
 
-// Adding reviews
+/* Adding reviews */
 product1.addReview(new Review(
     0, 
     "bob", 
@@ -140,21 +185,21 @@ product1.addReview(new Review(
 /**
  * Searches product by matching the name or description.
  * 
- * @param {products} Array of products.
- * @param {search} searching Text.
+ * @param {array} products Array of products.
+ * @param {string} search Searching Text.
  * @return Filtered array where the name or description matches the search query.
  */
-function searchProducts(products, search) {
+ function searchProducts(products, search) {
     return products.filter(
-        product => product.name.includes(search) || product.description.includes(search)
+        product => product.name.toLowerCase().includes(search) || product.description.toLowerCase().includes(search)
     )
 }
 
 /**
  * Sort products by specified attribute.
  * 
- * @param {products} Array of products. 
- * @param {sortRule} Attribute to sort by.
+ * @param {array} products Array of products. 
+ * @param sortRule Attribute to sort by.
  */
 function sortProducts(products, sortRule) {
     products.sort((a, b) => a[sortRule] - b[sortRule]);
