@@ -1,24 +1,48 @@
-function outputHttpResponse(statusCode, statusMessage, headers, body) {
-    console.log(`HTTP/1.1 ${statusCode} ${statusMessage}\n${headers} ${body ? "\n" + body : ""}`);
-}
-
+/**
+ * Procces HTTP request and makes response depending on
+ * method, uri, headers and body.
+ * Prints response to the console.
+ * 
+ * @param {string} $method HTTP method
+ * @param {string} $uri Request URI
+ * @param {string} $headers Request headers
+ * @param {string} $body Request body
+ */
 function processHttpRequest($method, $uri, $headers, $body) {
     const statusCode = $method === "GET" ? $uri.startsWith("/sum") ? 200 : 404 : 400;
     const statusMessage = getStatusMessage(statusCode);
     const body = (statusCode === 200) && /\?nums=[\d,]+/g.test($uri)
         ? sum($uri.match(/(?:nums=)([\d,]+)/)[1].split(",").map(num => +num))
         : "";
-    const headers = `${new Date()}
-Server: Apache/2.2.14 (Win32)
-Content-Length: ${body.toString().length}
-Connection: Closed
-Content-Type: text/html; charset=utf-8`
+    const headers =
+        `${new Date()}\n` +
+        `Server: Apache/2.2.14 (Win32)\n` +
+        `Content-Length: ${body.toString().length}\n` +
+        `Connection: Closed\n` +
+        `Content-Type: text/html; charset=utf-8`;
 
     outputHttpResponse(statusCode, statusMessage, headers, body);
 }
 
-const sum = (nums) => nums.reduce((total, num) => total += num);
+/**
+ * Prints fromatted response to the console.
+ * 
+ * @param {string} statusCode Status code
+ * @param {string} statusMessage Status message
+ * @param {string} headers Headers
+ * @param {string} body Body
+ */
+function outputHttpResponse(statusCode, statusMessage, headers, body) {
+    console.log(`HTTP/1.1 ${statusCode} ${statusMessage}\n${headers} ${body ? "\n" + body : ""}`);
+}
 
+
+/**
+ * Returns a message depending on status code.
+ * 
+ * @param {number} statusCode Status code of request.
+ * @returns {string} Status message.
+ */
 function getStatusMessage(statusCode) {
     switch (statusCode) {
         case 200: return "OK";
@@ -28,6 +52,20 @@ function getStatusMessage(statusCode) {
     }
 }
 
+/**
+ * Sums all numbers in specified array.
+ * 
+ * @param {number[]} nums Array of numbers.
+ * @returns {number} Total sum.
+ */
+const sum = (nums) => nums.reduce((total, num) => total += num);
+
+/**
+ * Parses request.
+ * 
+ * @param {string} string Request as string
+ * @returns {Object} Object with properties of request.
+ */
 function parseTcpStringAsHttpRequest(string) {
     return {
     method: string.match(/\w+/)[0],
@@ -41,15 +79,16 @@ function parseTcpStringAsHttpRequest(string) {
   };
 }
 
-/* Testing */
-const contents = `GET /sum?nums=1,2,3,8,10 HTTP/1.1
-Host: student.shpp.me
+/* Create request */
+const contents = 
+    `GET /sum?nums=1,2,3,8,10 HTTP/1.1\n` +
+    `Host: student.shpp.me\n` +
+    `\n`;
 
-`;
+    console.log(contents);
 
-http = parseTcpStringAsHttpRequest(contents);
+/* Parse request */
+const http = parseTcpStringAsHttpRequest(contents);
 
-console.log("==================== REQUEST ====================\n");
-console.log(JSON.stringify(http, undefined, 2));
-console.log("\n==================== RESPONSE ====================\n");
+/* Process request and print response to the console */
 processHttpRequest(http.method, http.uri, http.headers, http.body);

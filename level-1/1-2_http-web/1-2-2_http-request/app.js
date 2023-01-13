@@ -1,3 +1,8 @@
+/**
+ * Reads HTTP request.
+ * 
+ * @returns {string} Request as string.
+ */
 function readHttpLikeInput(){
     var fs = require("fs");
     var res = "";
@@ -17,8 +22,12 @@ function readHttpLikeInput(){
     return res;
 }
 
-let contents = readHttpLikeInput();
-
+/**
+ * Parses request.
+ * 
+ * @param {string} string Request as string
+ * @returns {object} Object with properties of request.
+ */
 function parseTcpStringAsHttpRequest(string) {
     return {
     method: string.match(/\w+/)[0],
@@ -32,5 +41,11 @@ function parseTcpStringAsHttpRequest(string) {
   }; 
 }
 
-http = parseTcpStringAsHttpRequest(contents); 
+/* Get request string */
+const contents = readHttpLikeInput();
+
+/* Parse request */
+const http = parseTcpStringAsHttpRequest(contents); 
+
+/* "node tester.js 2 app.js" to test */
 console.log(JSON.stringify(http, undefined, 2));
