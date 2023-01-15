@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@400;800&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Merriweather Sans";
+    color: #111111c6;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper {
+    width: 60%;
+    min-height: 100vh;
+    /* border: 1px solid gray; */
+    padding: 50px;
+    background-color:rgba(248, 248, 248, 0.227);
+}
+
+.text-box {
+    /* border: 1px solid green; */
+    line-height: 1.6;
+    max-width: 70%;
+}
+
+.text-box p {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.text-box a:link, .text-box a:visited {
+    color: rgb(7, 139, 120);
+}
+
+.text-box a:hover, .text-box a:active {
+    color: rgb(5, 86, 74);
+}
+
+.skills {
+    margin-top: 30px;
+}
+
+.skills p {
+    margin-top: 15px;
+}
+
+ul {
+    list-style-type: none;
+}
+ul > li:before {
+    content: "- ";
+    text-indent: -5px;
+}
+
+.photo {
+    float: right;
+    max-width: 190px;
+    /* border: 1px solid yellow;  */
+}
+
+.contacts p {
+    margin-top: 30px;
+    color: rgb(131, 131, 131);
+    font-size: 14px;
+    display: inline-flex;
+}
+
+.contacts p ~ p {
+    margin-left: 10px;
+}
+
+.contacts p + a {
+    margin-left: 10px;
+}
+
+.contacts a ~ a {
+    margin-left: 5px;
+}
+
+@media screen and (max-width: 800px) {
+    .photo {
+        float: none;
+    }
+}
