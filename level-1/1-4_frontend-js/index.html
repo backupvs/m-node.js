@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Task 1, 2 -->
+        <div class="task container-col" id="task1-2">
+            <div class="task-title">
+                <h3>Task 1, 2</h3>
+            </div>
+            <div class="container-row">
+                <div id="box-task1"></div>
+                <div class="container-col space-around">
+                    <button id="btn-displayNone">display: none</button>
+                    <button id="btn-remove">remove()</button>
+                    <button id="btn-hide-task1">hide</button>
+                </div>
+            </div>
+        </div>
+        <!-- Task 3 -->
+        <div class="task container-col" id="task3">
+            <div class="task-title">
+                <h3>Task 3</h3>
+            </div>
+            <div class="container-row">
+                <div class="black-box"></div>
+                <div class="black-box"></div>
+                <div class="black-box"></div>
+                <div class="black-box"></div>
+                <div class="black-box"></div>
+                <div class="container-col space-around">
+                    <button id="btn-hide-task3">hide</button>
+                </div>
+            </div>
+        </div>
+        <!-- Task 4 -->
+        <div class="task container-col" id="task4">
+            <div class="task-title">
+                <h3>Task 4</h3>
+            </div>
+            <div class="container-row center">
+                <input type="text" placeholder="selector" id="input-task4">
+                <button id="btn-hide-task4">hide</button>
+            </div>
+        </div>
+        <!-- Task 5 -->
+        <div class="task container-col" id="task5">
+            <div class="task-title">
+                <h3>Task 5</h3>
+            </div>
+            <div class="container-row">
+                <div id="yellow-box">
+                    <p>Click me</p>
+                </div>
+            </div>
+        </div>
+        <!-- Task 6 -->
+        <div class="task container-col" id="task6">
+            <div class="task-title">
+                <h3>Task 6</h3>
+            </div>
+            <div class="container-col center">
+                <div id="red-box" class="hidden"></div>
+                <button id="btn-hide-task6">hover me</button>
+            </div>
+        </div>
+        <!-- Task 7 -->
+        <div class="task container-col" id="task7">
+            <div class="task-title">
+                <h3>Task 7</h3>
+            </div>
+            <div class="container-col center">
+                <div id="green-rect"></div>
+                <input type="text" placeholder="type smth" id="input-task7">
+            </div>
+        </div>
+        <!-- Task 8 -->
+        <div class="task container-col" id="task8">
+            <div class="task-title">
+                <h3>Task 8</h3>
+            </div>
+            <div class="container-col center">
+                <div class="img-placeholder"><img></div>
+                <input type="text" placeholder="image link" id="input-task8">
+                <button id="btn-task8">show</button>
+            </div>
+        </div>
+        <!-- Task 9 -->
+        <div class="task container-col" id="task9">
+            <div class="task-title">
+                <h3>Task 9</h3>
+            </div>
+            <div class="container-col center">
+                <div class="container-row" id="container-images">
+                    <div class="img-placeholder"><img></div>
+                </div>
+                <textarea id="textarea-task9" placeholder="image links"></textarea>
+                <button id="btn-task9">show</button>
+            </div>
+        </div>
+        <!-- Task 13 -->
+        <div class="task container-col" id="task13">
+            <div class="task-title">
+                <h3>Task 13</h3>
+            </div>
+            <div class="container-row center">
+                <div id="local-input" class="div-input" contenteditable="true"></div>
+                <div id="session-input" class="div-input" contenteditable="true"></div>
+                <div id="cookie-input" class="div-input" contenteditable="true"></div>
+            </div>
+        </div>
+        <!-- Task 15 -->
+        <div class="task container-col" id="task15">
+            <div class="task-title">
+                <h3>Task 15</h3>
+            </div>
+            <div class="container-col center">
+                <div id="box-outer">
+                    <div id="box-inner"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Task 17 -->
+        <div class="task container-col" id="task17">
+            <div class="task-title">
+                <h3>Task 17</h3>
+            </div>
+            <div class="container-col center">
+                <p style="margin-bottom: 10px">Not refreshable form after submiting</p>
+                <form id="form-task17">
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+        <!-- Task 18 -->
+        <div class="task container-col" id="task18">
+            <div class="task-title">
+                <h3>Task 18</h3>
+            </div>
+            <div class="container-col center">
+                <div class="drag-n-drop" style="text-align: center">
+                    <p class="fileinfo">Select or drop a file</p>
+                    <input type="file" id="input-file">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="upper-right-fixed">
+        <!-- Task 10 -->
+        <div id="mouse-coord-tracker">X: 0, Y: 0</div>
+        <!-- Task 11 -->
+        <div id="browser-lang"></div>
+        <!-- Task 12 -->
+        <div id="geolocation">Ш: ?, Д: ?</div>
+    </div>
+    <!-- Task 14 -->
+    <button id="btn-gotop">Go top</button>
+    <!-- Task 16 -->
+    <div id="pageblock"></div>
+
+    <script src="app.js" defer></script>
+</body>
+
+</html>
