@@ -1,0 +1,25 @@
+{
+  "name": "2-2_async-promises",
+  "version": "1.0.0",
+  "description": "2-2_async-promises",
+  "main": "index.js",
+  "exports": "./index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rimraf ./dist",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "ts": "npm run build && npm run start"
+  },
+  "keywords": [
+    "typescript"
+  ],
+  "author": "backupvs",
+  "license": "ISC",
+  "dependencies": {
+    "rimraf": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18"
+  }
+}
