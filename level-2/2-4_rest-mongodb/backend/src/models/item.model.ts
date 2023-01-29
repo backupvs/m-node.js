@@ -1,27 +1,13 @@
-// Temp id
-const generateId = ((init?: number) => {
-    let stupidId = init || 1;
-    return () => {
-        return stupidId++;
-    }
-})();
-
-class Item {
-    private id: number;
+export class Item {
     private text: string;
     private checked: boolean;
 
     constructor(text: string) {
-        this.id = generateId();
         this.text = text;
         this.checked = false;
     }
 
-    public getId(): number {
-        return this.id;
-    }
-
-    public get getText() {
+    public getText() {
         return this.text;
     }
 
@@ -35,6 +21,13 @@ class Item {
 
     public setChecked(checked: boolean) {
         this.checked = checked;
+    }
+
+    public toJSON() {
+        return {
+            text: this.text,
+            checked: this.checked
+        }
     }
 }
 
