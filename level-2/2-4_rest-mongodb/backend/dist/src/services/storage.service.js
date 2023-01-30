@@ -9,37 +9,71 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateId = exports.updateStorage = exports.getStorage = void 0;
+exports.generateUserId = exports.generateItemId = exports.updateStorage = exports.getStorage = void 0;
 const promises_1 = require("fs/promises");
+const fs_1 = require("fs");
 const STORAGE_PATH = __dirname + "../../../../storage.json";
+// Read storage if it exists, create it otherwise
 function readStorage() {
     return __awaiter(this, void 0, void 0, function* () {
-        let buffer = yield (0, promises_1.readFile)(STORAGE_PATH);
-        let storage = JSON.parse(buffer.toString());
+        try {
+            yield (0, promises_1.access)(STORAGE_PATH, fs_1.constants.F_OK);
+        }
+        catch (err) {
+            console.error("Storage doesn't exist. Creating storage...");
+            yield createStorage();
+        }
+        const buffer = yield (0, promises_1.readFile)(STORAGE_PATH);
+        const storage = JSON.parse(buffer.toString());
         return storage;
     });
 }
+// Initialize new storage and creates it
+function createStorage() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const initStorage = {
+            nextItemId: 1,
+            nextUserId: 1,
+            items: [],
+            users: []
+        };
+        yield updateStorage(initStorage);
+        console.log("Storage created successfuly");
+    });
+}
+// Read storage and return it as StorageType
 function getStorage() {
     return __awaiter(this, void 0, void 0, function* () {
-        let storage = yield readStorage();
+        const storage = yield readStorage();
         return storage;
     });
 }
 exports.getStorage = getStorage;
+// Rewrite storage
 function updateStorage(updatedStorage) {
     return __awaiter(this, void 0, void 0, function* () {
         (0, promises_1.writeFile)(STORAGE_PATH, JSON.stringify(updatedStorage));
     });
 }
 exports.updateStorage = updateStorage;
-// Generate ID and update storage with new incremented ID.
-function generateId() {
+// Generate ID for item and update storage with new incremented ID.
+function generateItemId() {
     return __awaiter(this, void 0, void 0, function* () {
-        let storage = yield getStorage();
-        let id = storage.id++;
+        const storage = yield getStorage();
+        const id = storage.nextItemId++;
         yield updateStorage(storage);
         return id;
     });
 }
-exports.generateId = generateId;
+exports.generateItemId = generateItemId;
+// Generate ID for user and update storage with new incremented ID.
+function generateUserId() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const storage = yield getStorage();
+        const id = storage.nextUserId++;
+        yield updateStorage(storage);
+        return id;
+    });
+}
+exports.generateUserId = generateUserId;
 exports.default = { updateStorage, getStorage };

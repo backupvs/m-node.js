@@ -1,1 +1,1 @@
-{"id":13,"items":[]}
+{"nextItemId":4,"nextUserId":4,"items":[{"ownerId":1,"id":1,"text":"Wash the dishes","checked":true},{"ownerId":2,"id":3,"text":"Make dinner","checked":true}],"users":[{"id":1,"login":"john","pass":"12345"},{"id":2,"login":"jeremy","pass":"abc000"}]}

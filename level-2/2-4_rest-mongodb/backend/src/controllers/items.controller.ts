@@ -1,26 +1,40 @@
 import { Request, Response } from "express";
 import storageService from "../services/storage.service";
-import { generateId } from "../services/storage.service";
+import { generateItemId } from "../services/storage.service";
 import Item from "../models/item.model";
 
 // Object to send as JSON after success deleting or updating
 const success = { ok: true };
+// const error = { error: "Bad request" };
 
 export const getItems = async (req: Request, res: Response) => {
+    if (!req.session.userId) {
+        res.status(403).json({ error: "forbidden" });
+        return;
+    }
     const storage = await storageService.getStorage();
-    res.json({ items: storage.items });
+    const items = storage.items.filter(item => item.ownerId === req.session.userId);
+    res.json({ items: items });
 }
 
 export const createItem = async (req: Request, res: Response) => {
-    const generatedId = await generateId();
+    if (!req.session.userId) {
+        res.status(403).json({ error: "forbidden" });
+        return;
+    }
+    const generatedId = await generateItemId();
     const storage = await storageService.getStorage();
     const newItem = new Item(req.body.text);
-    storage.items.push({id: generatedId, ...newItem.toJSON()});
+    storage.items.push({ ownerId: req.session.userId, id: generatedId, ...newItem.toJSON() });
     await storageService.updateStorage(storage);
     res.json({ id: generatedId });
 }
 
 export const deleteItem = async (req: Request, res: Response) => {
+    if (!req.session.userId) {
+        res.status(403).json({ error: "forbidden" });
+        return;
+    }
     const storage = await storageService.getStorage();
     findItemIndex(req.body.id, async (err, index) => {
         if (err) {
@@ -34,6 +48,10 @@ export const deleteItem = async (req: Request, res: Response) => {
 }
 
 export const updateItem = async (req: Request, res: Response) => {
+    if (!req.session.userId) {
+        res.status(403).json({ error: "forbidden" });
+        return;
+    }
     const storage = await storageService.getStorage();
     findItemIndex(req.body.id, async (err, index) => {
         if (err) {
@@ -51,14 +69,15 @@ export const updateItem = async (req: Request, res: Response) => {
  * Find index of item in storage by ID and run callbacks passing that index.
  * 
  * @param id Id to search.
- * @param found Callback to run when item was found passing index as argument.
- * @param err Callback to run when item was not found.
+ * @param callback Callback to call with error if item was not found.
  */
 async function findItemIndex(id: number, callback: (err: Error | null, index: number) => void) {
     const storage = await storageService.getStorage();
     let error = null;
     let foundIndex = storage.items.findIndex(item => item.id === id);
-    if (foundIndex === -1) error = new Error(`The item with ID: "${id}" does not exist`);
+    if (foundIndex === -1) {
+        error = new Error(`The item with ID: "${id}" does not exist`)
+    };
     callback(error, foundIndex);
 }
 
