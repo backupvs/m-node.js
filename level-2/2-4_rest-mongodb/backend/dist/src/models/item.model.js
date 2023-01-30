@@ -2,19 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Item = void 0;
 class Item {
-    /*private*/ constructor(/*id: number,*/ text) {
-        // this.id = id;
+    constructor(text) {
         this.text = text;
         this.checked = false;
     }
-    // public static async create(text: string) {
-    //     let generatedId = await generateId();
-    //     console.log("GENERATED ID:", generatedId);
-    //     return new Item(generatedId, text);
-    // }
-    // public getId(): number {
-    //     return this.id;
-    // }
     getText() {
         return this.text;
     }
@@ -29,7 +20,6 @@ class Item {
     }
     toJSON() {
         return {
-            // id: this.id,
             text: this.text,
             checked: this.checked
         };

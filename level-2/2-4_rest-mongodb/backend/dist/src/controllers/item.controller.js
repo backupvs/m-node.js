@@ -24,7 +24,6 @@ const getItems = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getItems = getItems;
 const createItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const newItem = await Item.create(req.body.text);
     const generatedId = yield (0, storage_service_2.generateId)();
     const storage = yield storage_service_1.default.getStorage();
     const newItem = new item_model_1.default(req.body.text);
@@ -35,7 +34,16 @@ const createItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.createItem = createItem;
 const deleteItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const storage = yield storage_service_1.default.getStorage();
-    findItemIndex(req.body.id, (index) => __awaiter(void 0, void 0, void 0, function* () {
+    // findItemIndex(req.body.id, async index => {
+    //     storage.items.splice(index, 1);
+    //     await storageService.updateStorage(storage);
+    //     res.json(success);
+    // });
+    findItemIndex(req.body.id, (err, index) => __awaiter(void 0, void 0, void 0, function* () {
+        if (err) {
+            console.error(err);
+            return;
+        }
         storage.items.splice(index, 1);
         yield storage_service_1.default.updateStorage(storage);
         res.json(success);
@@ -44,7 +52,17 @@ const deleteItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.deleteItem = deleteItem;
 const updateItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const storage = yield storage_service_1.default.getStorage();
-    findItemIndex(req.body.id, (index) => __awaiter(void 0, void 0, void 0, function* () {
+    // findItemIndex(req.body.id, async index => {
+    //     storage.items[index].text = req.body.text;
+    //     storage.items[index].checked = req.body.checked;
+    //     await storageService.updateStorage(storage);
+    //     res.json(success);
+    // });
+    findItemIndex(req.body.id, (err, index) => __awaiter(void 0, void 0, void 0, function* () {
+        if (err) {
+            console.error(err);
+            return;
+        }
         storage.items[index].text = req.body.text;
         storage.items[index].checked = req.body.checked;
         yield storage_service_1.default.updateStorage(storage);
@@ -59,17 +77,14 @@ exports.updateItem = updateItem;
  * @param found Callback to run when item was found passing index as argument.
  * @param err Callback to run when item was not found.
  */
-function findItemIndex(id, found, err) {
+function findItemIndex(id, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const storage = yield storage_service_1.default.getStorage();
+        let error = null;
         let foundIndex = storage.items.findIndex(item => item.id === id);
-        if (foundIndex !== -1) {
-            found(foundIndex);
-        }
-        else {
-            if (err)
-                err();
-        }
+        if (foundIndex === -1)
+            error = new Error(`The item with ID: "${id}" does not exist`);
+        callback(error, foundIndex);
     });
 }
 exports.default = { getItems: exports.getItems, createItem: exports.createItem, deleteItem: exports.deleteItem, updateItem: exports.updateItem };

@@ -22,7 +22,16 @@ export const createItem = async (req: Request, res: Response) => {
 
 export const deleteItem = async (req: Request, res: Response) => {
     const storage = await storageService.getStorage();
-    findItemIndex(req.body.id, async index => {
+    // findItemIndex(req.body.id, async index => {
+    //     storage.items.splice(index, 1);
+    //     await storageService.updateStorage(storage);
+    //     res.json(success);
+    // });
+    findItemIndex(req.body.id, async (err, index) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
         storage.items.splice(index, 1);
         await storageService.updateStorage(storage);
         res.json(success);
@@ -31,7 +40,17 @@ export const deleteItem = async (req: Request, res: Response) => {
 
 export const updateItem = async (req: Request, res: Response) => {
     const storage = await storageService.getStorage();
-    findItemIndex(req.body.id, async index => {
+    // findItemIndex(req.body.id, async index => {
+    //     storage.items[index].text = req.body.text;
+    //     storage.items[index].checked = req.body.checked;
+    //     await storageService.updateStorage(storage);
+    //     res.json(success);
+    // });
+    findItemIndex(req.body.id, async (err, index) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
         storage.items[index].text = req.body.text;
         storage.items[index].checked = req.body.checked;
         await storageService.updateStorage(storage);
@@ -46,14 +65,12 @@ export const updateItem = async (req: Request, res: Response) => {
  * @param found Callback to run when item was found passing index as argument.
  * @param err Callback to run when item was not found.
  */
-async function findItemIndex(id: number, found: (index: number) => void, err?: () => void) {
+async function findItemIndex(id: number, callback: (err: Error | null, index: number) => void) {
     const storage = await storageService.getStorage();
+    let error = null;
     let foundIndex = storage.items.findIndex(item => item.id === id);
-    if (foundIndex !== -1) {
-        found(foundIndex);
-    } else {
-        if (err) err();
-    }
+    if (foundIndex === -1) error = new Error(`The item with ID: "${id}" does not exist`);
+    callback(error, foundIndex);
 }
 
 export default { getItems, createItem, deleteItem, updateItem };

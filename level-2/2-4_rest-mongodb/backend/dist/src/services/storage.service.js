@@ -36,13 +36,8 @@ exports.updateStorage = updateStorage;
 function generateId() {
     return __awaiter(this, void 0, void 0, function* () {
         let storage = yield getStorage();
-        console.log(storage);
         let id = storage.id++;
-        console.log(storage);
-        console.log("ID", id);
         yield updateStorage(storage);
-        let updstr = yield getStorage();
-        console.log("updstr", updstr);
         return id;
     });
 }
