@@ -22,11 +22,6 @@ export const createItem = async (req: Request, res: Response) => {
 
 export const deleteItem = async (req: Request, res: Response) => {
     const storage = await storageService.getStorage();
-    // findItemIndex(req.body.id, async index => {
-    //     storage.items.splice(index, 1);
-    //     await storageService.updateStorage(storage);
-    //     res.json(success);
-    // });
     findItemIndex(req.body.id, async (err, index) => {
         if (err) {
             console.error(err);
@@ -40,12 +35,6 @@ export const deleteItem = async (req: Request, res: Response) => {
 
 export const updateItem = async (req: Request, res: Response) => {
     const storage = await storageService.getStorage();
-    // findItemIndex(req.body.id, async index => {
-    //     storage.items[index].text = req.body.text;
-    //     storage.items[index].checked = req.body.checked;
-    //     await storageService.updateStorage(storage);
-    //     res.json(success);
-    // });
     findItemIndex(req.body.id, async (err, index) => {
         if (err) {
             console.error(err);
