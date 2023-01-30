@@ -342,7 +342,7 @@ README:
                     const route = this.apiVersion === 'v1' ? '/items' : '/router';
                     const qs = {action: this.apiVersion === 'v1' ? '' : 'getItems'};
                     fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), { 
-                        // // // // // // // // // // // // // // credentials: 'include',
+                        credentials: 'include',
                         method: this.apiVersion === 'v1' ? 'GET' : 'POST',
                     })
                         .then(res => res.json())
@@ -367,7 +367,7 @@ README:
                     fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
                         method: this.apiVersion === 'v1' ? 'DELETE' : 'POST',
                         body: request,
-                        // // // // // // // // // // // // // // credentials: 'include',
+                        credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -388,7 +388,7 @@ README:
                         fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
                             method: this.apiVersion === 'v1' ? 'POST' : 'POST',
                             body: request,
-                            // // // // // // // // // // // // // // credentials: 'include',
+                            credentials: 'include',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
@@ -410,7 +410,7 @@ README:
                     fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
                         method: this.apiVersion === 'v1' ? 'PUT' : 'POST',
                         body: request,
-                        // // // // // // // // // // // // // // credentials: 'include',
+                        credentials: 'include',
                         headers: {
                             'Content-Type': 'application/json'
                         },
@@ -446,7 +446,7 @@ README:
                     const qs = {action: this.apiVersion === 'v1' ? '' : 'logout'};
                     fetch(this.apiURL + this.apiVersion + route, {
                         method: this.apiVersion === 'v1' ? 'POST' : 'POST',
-                        // // // // // // // // // // // // // // credentials: 'include',
+                        credentials: 'include',
                     }).then(res => res.json())
                         .then((response) => {
                             if (response.ok) {
@@ -462,7 +462,7 @@ README:
                         const qs = {action: this.apiVersion === 'v1' ? '' : 'login'};
                         fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
                             method: this.apiVersion === 'v1' ? 'POST' : 'POST',
-                            // // // // // // // // // // // // // // credentials: 'include',
+                            credentials: 'include',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
