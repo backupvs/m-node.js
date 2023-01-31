@@ -5,23 +5,14 @@ import Item from "../models/item.model";
 
 // Object to send as JSON after success deleting or updating
 const success = { ok: true };
-// const error = { error: "Bad request" };
 
 export const getItems = async (req: Request, res: Response) => {
-    if (!req.session.userId) {
-        res.status(403).json({ error: "forbidden" });
-        return;
-    }
     const storage = await storageService.getStorage();
     const items = storage.items.filter(item => item.ownerId === req.session.userId);
     res.json({ items: items });
 }
 
 export const createItem = async (req: Request, res: Response) => {
-    if (!req.session.userId) {
-        res.status(403).json({ error: "forbidden" });
-        return;
-    }
     const generatedId = await generateItemId();
     const storage = await storageService.getStorage();
     const newItem = new Item(req.body.text);
@@ -31,10 +22,6 @@ export const createItem = async (req: Request, res: Response) => {
 }
 
 export const deleteItem = async (req: Request, res: Response) => {
-    if (!req.session.userId) {
-        res.status(403).json({ error: "forbidden" });
-        return;
-    }
     const storage = await storageService.getStorage();
     findItemIndex(req.body.id, async (err, index) => {
         if (err) {
@@ -48,16 +35,9 @@ export const deleteItem = async (req: Request, res: Response) => {
 }
 
 export const updateItem = async (req: Request, res: Response) => {
-    if (!req.session.userId) {
-        res.status(403).json({ error: "forbidden" });
-        return;
-    }
     const storage = await storageService.getStorage();
     findItemIndex(req.body.id, async (err, index) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
+        if (err) console.error(err);
         storage.items[index].text = req.body.text;
         storage.items[index].checked = req.body.checked;
         await storageService.updateStorage(storage);

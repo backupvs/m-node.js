@@ -12,15 +12,14 @@ export const register = async (req: Request, res: Response) => {
 
     const login = req.body.login;
     const pass = req.body.pass; // TODO validation
-    
+
     const generatedId = await generateUserId();
     const storage = await storageService.getStorage();
 
     const index = storage.users.findIndex(user => user.login === login);
 
     if (index !== -1) {
-        res.status(400).json({ error: "login already exists" });
-        return;
+        return res.status(400).json({ error: "login already exists" });
     }
 
     // TODO model User

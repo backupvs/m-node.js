@@ -27,8 +27,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const storage = yield storage_service_1.default.getStorage();
     const index = storage.users.findIndex(user => user.login === login);
     if (index !== -1) {
-        res.status(400).json({ error: "login already exists" });
-        return;
+        return res.status(400).json({ error: "login already exists" });
     }
     // TODO model User
     storage.users.push({

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { STATUS_CODES } from "http";
 
-function logger(req: Request, res: Response, next: (err?: any) => any) {
+const logger = (req: Request, res: Response, next: (err?: any) => any) => {
     // Add date, method and url to log message when request come.
     let logMsg = `[${new Date().toLocaleString()}] [Method: ${req.method}] [URL: ${req.url}]`;
 
@@ -13,6 +13,6 @@ function logger(req: Request, res: Response, next: (err?: any) => any) {
     });
 
     next();
-}
+};
 
 export default logger;

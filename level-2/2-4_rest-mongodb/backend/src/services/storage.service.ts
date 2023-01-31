@@ -9,7 +9,7 @@ type StorageType = {
     nextUserId: number
     items: [
         {
-            ownerId: number,
+            ownerId: number | undefined,
             id: number,
             text: string,
             checked: boolean

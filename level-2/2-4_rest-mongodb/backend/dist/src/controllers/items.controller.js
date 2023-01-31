@@ -18,22 +18,13 @@ const storage_service_2 = require("../services/storage.service");
 const item_model_1 = __importDefault(require("../models/item.model"));
 // Object to send as JSON after success deleting or updating
 const success = { ok: true };
-// const error = { error: "Bad request" };
 const getItems = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.session.userId) {
-        res.status(403).json({ error: "forbidden" });
-        return;
-    }
     const storage = yield storage_service_1.default.getStorage();
     const items = storage.items.filter(item => item.ownerId === req.session.userId);
     res.json({ items: items });
 });
 exports.getItems = getItems;
 const createItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.session.userId) {
-        res.status(403).json({ error: "forbidden" });
-        return;
-    }
     const generatedId = yield (0, storage_service_2.generateItemId)();
     const storage = yield storage_service_1.default.getStorage();
     const newItem = new item_model_1.default(req.body.text);
@@ -43,10 +34,6 @@ const createItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.createItem = createItem;
 const deleteItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.session.userId) {
-        res.status(403).json({ error: "forbidden" });
-        return;
-    }
     const storage = yield storage_service_1.default.getStorage();
     findItemIndex(req.body.id, (err, index) => __awaiter(void 0, void 0, void 0, function* () {
         if (err) {
@@ -60,16 +47,10 @@ const deleteItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.deleteItem = deleteItem;
 const updateItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.session.userId) {
-        res.status(403).json({ error: "forbidden" });
-        return;
-    }
     const storage = yield storage_service_1.default.getStorage();
     findItemIndex(req.body.id, (err, index) => __awaiter(void 0, void 0, void 0, function* () {
-        if (err) {
+        if (err)
             console.error(err);
-            return;
-        }
         storage.items[index].text = req.body.text;
         storage.items[index].checked = req.body.checked;
         yield storage_service_1.default.updateStorage(storage);
