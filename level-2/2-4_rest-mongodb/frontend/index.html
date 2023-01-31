@@ -347,7 +347,7 @@ README:
                     })
                         .then(res => res.json())
                         .then((response) => {
-                            if (response.error === 'forbidden') {
+                            if (response.error === 'unauthorized') {
                                 this.step = 'login';
                             } else {
                                 this.tasks = response.items.map((item) => {
