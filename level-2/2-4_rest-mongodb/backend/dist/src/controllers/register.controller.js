@@ -15,14 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
 const storage_service_1 = __importDefault(require("../services/storage.service"));
 const storage_service_2 = require("../services/storage.service");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const success = { ok: true };
+const saltRounds = 10;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.session.userId) {
-        res.status(400).json({ error: "already logged in" });
-        return;
+        return res.status(400).json({ error: "already logged in" });
     }
     const login = req.body.login;
-    const pass = req.body.pass; // TODO validation
+    const pass = req.body.pass;
     const generatedId = yield (0, storage_service_2.generateUserId)();
     const storage = yield storage_service_1.default.getStorage();
     const index = storage.users.findIndex(user => user.login === login);
@@ -33,7 +34,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     storage.users.push({
         id: generatedId,
         login: login,
-        pass: pass // TODO hash
+        pass: yield bcrypt_1.default.hash(pass, 10) // TODO hash
     });
     yield storage_service_1.default.updateStorage(storage);
     res.json(success);

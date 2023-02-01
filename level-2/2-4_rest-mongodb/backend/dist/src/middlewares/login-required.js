@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginRequired = void 0;
 const loginRequired = (req, res, next) => {
-    if (!req.session.user) {
+    if (!req.session.userId) {
         res.status(401).json({ error: "unauthorized" });
     }
     else {

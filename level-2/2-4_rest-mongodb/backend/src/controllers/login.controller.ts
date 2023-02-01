@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import storageService from "../services/storage.service";
+import bcrypt from "bcrypt";
 
 const success = { ok: true };
 const error = { error: "not found" };
@@ -16,7 +17,8 @@ export const login = async (req: Request, res: Response) => {
     const index = storage.users.findIndex(user => user.login === login);
 
     if (index !== -1) {
-        if (storage.users[index].pass === pass) { // TODO hash
+        const result = await bcrypt.compare(pass, storage.users[index].pass);
+        if (result) {
             req.session.userId = storage.users[index].id;
             res.json(success);
         } else {

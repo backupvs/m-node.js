@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
 import storageService from "../services/storage.service";
 import { generateUserId } from "../services/storage.service";
+import bcrypt from "bcrypt";
 
 const success = { ok: true };
+const saltRounds = 10;
 
 export const register = async (req: Request, res: Response) => {
     if (req.session.userId) {
-        res.status(400).json({ error: "already logged in" });
-        return;
+        return res.status(400).json({ error: "already logged in" });
     }
 
     const login = req.body.login;
-    const pass = req.body.pass; // TODO validation
+    const pass = req.body.pass;
 
     const generatedId = await generateUserId();
     const storage = await storageService.getStorage();
@@ -26,7 +27,7 @@ export const register = async (req: Request, res: Response) => {
     storage.users.push({
         id: generatedId,
         login: login,
-        pass: pass // TODO hash
+        pass: await bcrypt.hash(pass, 10) // TODO hash
     });
 
     await storageService.updateStorage(storage);

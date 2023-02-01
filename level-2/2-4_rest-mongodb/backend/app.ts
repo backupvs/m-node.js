@@ -5,9 +5,7 @@ import sessionFileStore from "session-file-store";
 import responseTime from "response-time";
 import bodyParser from "body-parser";
 import logger from "./src/middlewares/logger";
-import sessionChecker from "./src/middlewares/session-checker";
 import v1 from "./src/routes/v1.router";
-import Item from "./src/models/item.model";
 
 // Configuration constants
 const app: express.Express = express();
@@ -43,14 +41,12 @@ const sessionConfig: session.SessionOptions = {
 declare module "express-session" {
     interface SessionData {
         userId: number,
-        user: any // todo model
     }
 }
 
 // Middlewares
 app.use(cors(corsConfig));
 app.use(session(sessionConfig));
-app.use(sessionChecker);
 app.use(responseTime());
 app.use(logger);
 app.use(bodyParser.json());

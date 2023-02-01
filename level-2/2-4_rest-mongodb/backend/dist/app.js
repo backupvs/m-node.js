@@ -10,7 +10,6 @@ const session_file_store_1 = __importDefault(require("session-file-store"));
 const response_time_1 = __importDefault(require("response-time"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const logger_1 = __importDefault(require("./src/middlewares/logger"));
-const session_checker_1 = __importDefault(require("./src/middlewares/session-checker"));
 const v1_router_1 = __importDefault(require("./src/routes/v1.router"));
 // Configuration constants
 const app = (0, express_1.default)();
@@ -40,7 +39,6 @@ const sessionConfig = {
 // Middlewares
 app.use((0, cors_1.default)(corsConfig));
 app.use((0, express_session_1.default)(sessionConfig));
-app.use(session_checker_1.default);
 app.use((0, response_time_1.default)());
 app.use(logger_1.default);
 app.use(body_parser_1.default.json());

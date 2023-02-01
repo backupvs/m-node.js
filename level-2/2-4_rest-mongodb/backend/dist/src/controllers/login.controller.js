@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
 const storage_service_1 = __importDefault(require("../services/storage.service"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const success = { ok: true };
 const error = { error: "not found" };
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,7 +26,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const storage = yield storage_service_1.default.getStorage();
     const index = storage.users.findIndex(user => user.login === login);
     if (index !== -1) {
-        if (storage.users[index].pass === pass) { // TODO hash
+        const result = yield bcrypt_1.default.compare(pass, storage.users[index].pass);
+        if (result) {
             req.session.userId = storage.users[index].id;
             res.json(success);
         }
