@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import session from "express-session";
-import sessionFileStore from "session-file-store";
+import * as config from "./app.config";
 import responseTime from "response-time";
 import bodyParser from "body-parser";
 import logger from "./src/middlewares/logger";
@@ -10,43 +10,10 @@ import v1 from "./src/routes/v1.router";
 // Configuration constants
 const app: express.Express = express();
 const port: number = 3005;
-const SESSION_LIFETIME: number = 1000 * 60 * 60 * 2; // two hours
-
-// Initialize file store for sessions
-const FileStore = sessionFileStore(session);
-
-// Cookie config
-const cookieConfig: session.CookieOptions = {
-    maxAge: SESSION_LIFETIME,
-    secure: false
-};
-
-// CORS config
-const corsConfig: cors.CorsOptions = {
-    credentials: true,
-    origin: "http://localhost:8080"
-};
-
-// Session config
-const sessionConfig: session.SessionOptions = {
-    name: "sid",
-    secret: 'the-most-secret-ever',
-    resave: true,
-    saveUninitialized: false,
-    store: new FileStore,
-    cookie: cookieConfig
-};
-
-// Extend SessionData interface with new properties.
-declare module "express-session" {
-    interface SessionData {
-        userId: number,
-    }
-}
 
 // Middlewares
-app.use(cors(corsConfig));
-app.use(session(sessionConfig));
+app.use(cors(config.corsConfig));
+app.use(session(config.sessionConfig));
 app.use(responseTime());
 app.use(logger);
 app.use(bodyParser.json());

@@ -20,7 +20,7 @@ export const login = async (req: Request, res: Response) => {
         const result = await bcrypt.compare(pass, storage.users[index].pass);
         if (result) {
             req.session.userId = storage.users[index].id;
-            res.json(success);
+            res.status(201).json(success);
         } else {
             res.status(400).json(error);
         }
