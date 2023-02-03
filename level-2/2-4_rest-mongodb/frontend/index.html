@@ -265,10 +265,10 @@ README:
                 <span><button @click="addTask" class="button new_todo_button">Добавить</button></span>
             </label>
             <h3 class="status_title">{{'Активные задачи: ' + tasks.length}}</h3>
-            <task @task_del="deleteTask(task.id)"
+            <task @task_del="deleteTask(task._id)"
                     @task_edit="editTask(index)"
-                    @task_done="markAsDone(index, task.id)"
-                    @save="save(index, task.id)"
+                    @task_done="markAsDone(index, task._id)"
+                    @save="save(index, task._id)"
                     @disable="disable(index)"
                     :data="task"
                     :index="index+1"
@@ -361,6 +361,7 @@ README:
                         })
                 },
                 deleteTask: function (index) {
+                    alert(index);
                     let request = JSON.stringify({ id: index, });
                     const route = this.apiVersion === 'v1' ? '/items' : '/router';
                     const qs = {action: this.apiVersion === 'v1' ? '' : 'deleteItem'};
@@ -458,6 +459,8 @@ README:
                 logIn() {
                     if (this.login.trim() !== '' && this.pass.trim()) {
                         let params = JSON.stringify({ login: this.login, pass: this.pass });
+                        this.login = "";
+                        this.pass = "";
                         const route = this.apiVersion === 'v1' ? '/login' : '/router';
                         const qs = {action: this.apiVersion === 'v1' ? '' : 'login'};
                         fetch(this.apiURL + this.apiVersion + route + this.backendSuffix + '?' + new URLSearchParams(qs), {
