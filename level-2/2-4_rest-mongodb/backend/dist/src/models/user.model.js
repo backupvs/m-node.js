@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Item = void 0;
+exports.User = void 0;
 const mongodb_1 = require("mongodb");
-class Item {
-    constructor(text) {
+class User {
+    constructor(login, pass) {
         this._id = new mongodb_1.ObjectId();
-        this.text = text;
-        this.checked = false;
+        this.login = login;
+        this.pass = pass;
+        this.items = [];
     }
 }
-exports.Item = Item;
-exports.default = Item;
+exports.User = User;

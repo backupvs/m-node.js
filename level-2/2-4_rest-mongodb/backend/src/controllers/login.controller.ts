@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import storageService from "../services/storage.service";
+import database from "../services/mongodb.service";
 import bcrypt from "bcrypt";
 
 const success = { ok: true };
@@ -10,17 +10,17 @@ export const login = async (req: Request, res: Response) => {
         return res.status(400).json({ error: "already logged in" });
     }
 
-    const login = req.body.login;
-    const pass = req.body.pass;
+    const requestLogin = req.body.login;
+    const requestPass = req.body.pass;
 
-    const storage = await storageService.getStorage();
-    const index = storage.users.findIndex(user => user.login === login);
+    const users = database.getUsersCollection();
+    const user = await users.findOne({ login: requestLogin });
 
-    if (index !== -1) {
-        const result = await bcrypt.compare(pass, storage.users[index].pass);
+    if (user) {
+        const result = await bcrypt.compare(requestPass, user.pass);
         if (result) {
-            req.session.userId = storage.users[index].id;
-            res.status(201).json(success);
+            req.session.userId = user._id.toString();
+            res.status(200).json(success);
         } else {
             res.status(400).json(error);
         }

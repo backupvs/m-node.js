@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
-const storage_service_1 = __importDefault(require("../services/storage.service"));
+const mongodb_service_1 = __importDefault(require("../services/mongodb.service"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const success = { ok: true };
 const error = { error: "not found" };
@@ -21,15 +21,15 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.session.userId) {
         return res.status(400).json({ error: "already logged in" });
     }
-    const login = req.body.login;
-    const pass = req.body.pass;
-    const storage = yield storage_service_1.default.getStorage();
-    const index = storage.users.findIndex(user => user.login === login);
-    if (index !== -1) {
-        const result = yield bcrypt_1.default.compare(pass, storage.users[index].pass);
+    const requestLogin = req.body.login;
+    const requestPass = req.body.pass;
+    const users = mongodb_service_1.default.getUsersCollection();
+    const user = yield users.findOne({ login: requestLogin });
+    if (user) {
+        const result = yield bcrypt_1.default.compare(requestPass, user.pass);
         if (result) {
-            req.session.userId = storage.users[index].id;
-            res.json(success);
+            req.session.userId = user._id.toString();
+            res.status(200).json(success);
         }
         else {
             res.status(400).json(error);

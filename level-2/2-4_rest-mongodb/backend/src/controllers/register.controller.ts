@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import storageService from "../services/storage.service";
-import { generateUserId } from "../services/storage.service";
+import database from "../services/mongodb.service";
+import { User } from "../models/user.model";
 import bcrypt from "bcrypt";
 
 const success = { ok: true };
@@ -11,28 +11,18 @@ export const register = async (req: Request, res: Response) => {
         return res.status(400).json({ error: "already logged in" });
     }
 
-    const login = req.body.login;
-    const pass = req.body.pass;
+    const requestLogin = req.body.login;
+    const requestPass = req.body.pass;
 
-    const generatedId = await generateUserId();
-    const storage = await storageService.getStorage();
+    const users = database.getUsersCollection();
+    const user = await users.findOne({ login: requestLogin });
 
-    const index = storage.users.findIndex(user => user.login === login);
-
-    if (index !== -1) {
+    if (user) {
         return res.status(400).json({ error: "login already exists" });
     }
 
-    // TODO model User
-    storage.users.push({
-        id: generatedId,
-        login: login,
-        pass: await bcrypt.hash(pass, 10) // TODO hash
-    });
-
-    await storageService.updateStorage(storage);
-
-    res.json(success);
+    users.insertOne(new User(requestLogin, await bcrypt.hash(requestPass, saltRounds)));
+    res.status(201).json(success);
 }
 
 export default { register }
