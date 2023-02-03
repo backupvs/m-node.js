@@ -14,3 +14,5 @@ export class User {
         this.items = [];
     }
 }
+
+export default User;

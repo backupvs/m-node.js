@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import database from "../services/mongodb.service";
-import { User } from "../models/user.model";
+import User from "../models/user.model";
 import bcrypt from "bcrypt";
 
 const success = { ok: true };

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUsersCollection = exports.connect = exports.URI = void 0;
 const mongodb_1 = require("mongodb");
 // URI to connect to mongodb
-exports.URI = "***REMOVED***";
+exports.URI = "<your mongodb uri>";
 // Initialize client
 const client = new mongodb_1.MongoClient(exports.URI);
 // Get database
