@@ -29,14 +29,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const express_session_1 = __importDefault(require("express-session"));
+require("dotenv/config");
 const config = __importStar(require("./app.config"));
 const response_time_1 = __importDefault(require("response-time"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const logger_1 = __importDefault(require("./src/middlewares/logger"));
 const v1_router_1 = __importDefault(require("./src/routes/v1.router"));
 const mongodb_service_1 = __importDefault(require("./src/services/mongodb.service"));
-// Configuration constants
+// Initialize express app
 const app = (0, express_1.default)();
+// Try to connect to mongoDB
+mongodb_service_1.default.connect();
 // Middlewares
 app.use((0, cors_1.default)(config.corsConfig));
 app.use((0, express_session_1.default)(config.sessionConfig));
@@ -45,9 +48,7 @@ app.use(logger_1.default);
 app.use(body_parser_1.default.json());
 // Routes
 app.use("/api/v1", v1_router_1.default);
-// Try to connect to mongoDB
-mongodb_service_1.default.connect();
 // Start listen requests
-app.listen(config.PORT, () => {
-    console.log(`Listening on port ${config.PORT}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Listening on port ${process.env.PORT}`);
 });

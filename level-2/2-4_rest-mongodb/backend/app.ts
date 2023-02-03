@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import session from "express-session";
+import "dotenv/config";
 import * as config from "./app.config";
 import responseTime from "response-time";
 import bodyParser from "body-parser";
@@ -8,8 +9,11 @@ import logger from "./src/middlewares/logger";
 import v1 from "./src/routes/v1.router";
 import database from "./src/services/mongodb.service";
 
-// Configuration constants
+// Initialize express app
 const app: express.Express = express();
+
+// Try to connect to mongoDB
+database.connect();
 
 // Middlewares
 app.use(cors(config.corsConfig));
@@ -21,10 +25,7 @@ app.use(bodyParser.json());
 // Routes
 app.use("/api/v1", v1);
 
-// Try to connect to mongoDB
-database.connect();
-
 // Start listen requests
-app.listen(config.PORT, () => {
-    console.log(`Listening on port ${config.PORT}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Listening on port ${process.env.PORT}`);
 });

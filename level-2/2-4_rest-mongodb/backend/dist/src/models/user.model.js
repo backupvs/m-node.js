@@ -11,3 +11,4 @@ class User {
     }
 }
 exports.User = User;
+exports.default = User;

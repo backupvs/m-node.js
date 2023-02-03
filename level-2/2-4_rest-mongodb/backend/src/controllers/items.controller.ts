@@ -32,9 +32,6 @@ export const deleteItem = async (req: Request, res: Response) => {
 }
 
 export const updateItem = async (req: Request, res: Response) => {
-    console.log("id:", req.body.id);
-    console.log("text:", req.body.text);
-    console.log("checked:", req.body.checked);
     await users.updateOne(
         { _id: new ObjectId(req.session.userId), "items._id": new ObjectId(req.body.id) },
         { $set: {

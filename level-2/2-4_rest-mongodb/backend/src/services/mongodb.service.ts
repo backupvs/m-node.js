@@ -1,18 +1,11 @@
 import { MongoClient } from "mongodb";
 import User from "../models/user.model";
 
-// URI to connect to mongodb
-export const URI = "<your mongodb uri>";
-
 // Initialize client
-const client = new MongoClient(URI);
+const client = new MongoClient(process.env.DATABASE_URI!);
 
 // Get database
-const database = client.db("node-todo");
-
-
-/// LOGS FOR EVENTS FROM DB AND SESSIONS
-
+const database = client.db(process.env.DATABASE_NAME);
 
 export const connect = async () => {
     try {

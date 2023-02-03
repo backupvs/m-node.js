@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
 const mongodb_service_1 = __importDefault(require("../services/mongodb.service"));
-const user_model_1 = require("../models/user.model");
+const user_model_1 = __importDefault(require("../models/user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const success = { ok: true };
 const saltRounds = 10;
@@ -29,7 +29,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (user) {
         return res.status(400).json({ error: "login already exists" });
     }
-    users.insertOne(new user_model_1.User(requestLogin, yield bcrypt_1.default.hash(requestPass, saltRounds)));
+    users.insertOne(new user_model_1.default(requestLogin, yield bcrypt_1.default.hash(requestPass, saltRounds)));
     res.status(201).json(success);
 });
 exports.register = register;

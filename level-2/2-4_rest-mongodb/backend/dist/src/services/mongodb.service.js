@@ -9,14 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsersCollection = exports.connect = exports.URI = void 0;
+exports.getUsersCollection = exports.connect = void 0;
 const mongodb_1 = require("mongodb");
-// URI to connect to mongodb
-exports.URI = "<your mongodb uri>";
 // Initialize client
-const client = new mongodb_1.MongoClient(exports.URI);
+const client = new mongodb_1.MongoClient(process.env.DATABASE_URI);
 // Get database
-const database = client.db("node-todo");
+const database = client.db(process.env.DATABASE_NAME);
 const connect = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield client.connect();

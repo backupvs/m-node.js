@@ -361,7 +361,6 @@ README:
                         })
                 },
                 deleteTask: function (index) {
-                    alert(index);
                     let request = JSON.stringify({ id: index, });
                     const route = this.apiVersion === 'v1' ? '/items' : '/router';
                     const qs = {action: this.apiVersion === 'v1' ? '' : 'deleteItem'};
