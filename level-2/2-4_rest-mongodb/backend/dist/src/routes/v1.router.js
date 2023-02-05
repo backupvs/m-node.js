@@ -14,7 +14,7 @@ v1.route("/items")
     .get(login_required_1.default, items_controller_1.default.getItems)
     .post(login_required_1.default, items_controller_1.default.createItem)
     .delete(login_required_1.default, items_controller_1.default.deleteItem)
-    .put(login_required_1.default, items_controller_1.default.updateItem);
+    .put(login_required_1.default, items_controller_1.default.editItem);
 v1.route("/login").post(login_controller_1.default.login);
 v1.route("/register").post(register_controller_1.default.register);
 v1.route("/logout").post(login_required_1.default, logout_controller_1.default.logout);

@@ -15,7 +15,6 @@ exports.corsConfig = {
     credentials: true,
     origin: process.env.CORS_ORIGIN
 };
-console.log(process.env.CORS_ORIGIN_URL);
 // Session config
 exports.sessionConfig = {
     name: "sid",

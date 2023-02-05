@@ -7,6 +7,7 @@ import responseTime from "response-time";
 import bodyParser from "body-parser";
 import logger from "./src/middlewares/logger";
 import v1 from "./src/routes/v1.router";
+import v2 from "./src/routes/v2.router";
 import database from "./src/services/mongodb.service";
 
 // Initialize express app
@@ -24,6 +25,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/api/v1", v1);
+app.use("/api/v2", v2);
 
 // Start listen requests
 app.listen(process.env.PORT, () => {

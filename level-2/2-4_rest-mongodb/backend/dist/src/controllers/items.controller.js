@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateItem = exports.deleteItem = exports.createItem = exports.getItems = void 0;
+exports.editItem = exports.deleteItem = exports.createItem = exports.getItems = void 0;
 const item_model_1 = __importDefault(require("../models/item.model"));
 const mongodb_service_1 = __importDefault(require("../services/mongodb.service"));
 const mongodb_1 = require("mongodb");
@@ -20,31 +20,32 @@ const mongodb_1 = require("mongodb");
 const success = { ok: true };
 // Get collection of users from database
 const users = mongodb_service_1.default.getUsersCollection();
+// Get user by id from database and send his items array as json
 const getItems = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield users.findOne({ _id: new mongodb_1.ObjectId(req.session.userId) });
     res.json({ items: user === null || user === void 0 ? void 0 : user.items });
 });
 exports.getItems = getItems;
+// Create item from request body and push it to current user's items array
 const createItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newItem = new item_model_1.default(req.body.text);
     yield users.updateOne({ _id: new mongodb_1.ObjectId(req.session.userId) }, { $push: { items: newItem } });
     res.json({ id: newItem._id.toString() });
 });
 exports.createItem = createItem;
+// Get user by id from database and delete requested item by id
 const deleteItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield users.updateOne({ _id: new mongodb_1.ObjectId(req.session.userId) }, { $pull: { items: { _id: new mongodb_1.ObjectId(req.body.id) } } });
     res.json(success);
 });
 exports.deleteItem = deleteItem;
-const updateItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("id:", req.body.id);
-    console.log("text:", req.body.text);
-    console.log("checked:", req.body.checked);
+// Get user and requested item by id and change requested properties
+const editItem = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield users.updateOne({ _id: new mongodb_1.ObjectId(req.session.userId), "items._id": new mongodb_1.ObjectId(req.body.id) }, { $set: {
             "items.$.text": req.body.text,
             "items.$.checked": req.body.checked
         } });
     res.json(success);
 });
-exports.updateItem = updateItem;
-exports.default = { getItems: exports.getItems, createItem: exports.createItem, deleteItem: exports.deleteItem, updateItem: exports.updateItem };
+exports.editItem = editItem;
+exports.default = { getItems: exports.getItems, createItem: exports.createItem, deleteItem: exports.deleteItem, editItem: exports.editItem };

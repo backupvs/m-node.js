@@ -35,6 +35,7 @@ const response_time_1 = __importDefault(require("response-time"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const logger_1 = __importDefault(require("./src/middlewares/logger"));
 const v1_router_1 = __importDefault(require("./src/routes/v1.router"));
+const v2_router_1 = __importDefault(require("./src/routes/v2.router"));
 const mongodb_service_1 = __importDefault(require("./src/services/mongodb.service"));
 // Initialize express app
 const app = (0, express_1.default)();
@@ -48,6 +49,7 @@ app.use(logger_1.default);
 app.use(body_parser_1.default.json());
 // Routes
 app.use("/api/v1", v1_router_1.default);
+app.use("/api/v2", v2_router_1.default);
 // Start listen requests
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);

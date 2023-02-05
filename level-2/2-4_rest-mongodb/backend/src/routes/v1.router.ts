@@ -11,7 +11,7 @@ v1.route("/items")
     .get(loginRequired, itemController.getItems)
     .post(loginRequired, itemController.createItem)
     .delete(loginRequired, itemController.deleteItem)
-    .put(loginRequired, itemController.updateItem);
+    .put(loginRequired, itemController.editItem);
 
 v1.route("/login").post(loginController.login);
 
