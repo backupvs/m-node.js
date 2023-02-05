@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import itemsController from "../controllers/items.controller";
 import loginController from "../controllers/login.controller";
 import registerController from "../controllers/register.controller";
@@ -16,9 +16,6 @@ const routes: Record<string, { controller: Function, loginRequired: boolean }> =
     createItem: { controller: itemsController.createItem, loginRequired: true },
     editItem: { controller: itemsController.editItem, loginRequired: true }
 };
-
-////////// REQ QUERY PARSER TO MAKE SHORTER
-
 
 v2.use(function (req, res, next) {
     const action = String(req.query.action);

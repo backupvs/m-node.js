@@ -23,15 +23,6 @@ v2.use(function (req, res, next) {
     const action = String(req.query.action);
     routes[action].loginRequired ? (0, login_required_1.default)(req, res, next) : next();
 });
-// const routerController = async (req: Request, res: Response) => {
-//     const action = String(req.query.action);
-//     if (routes[action]) {
-//         routes[action].controller(req, res);
-//     } else {
-//         res.status(404).json({ error: "unknown query" });
-//     }
-// };
-// v2.route("/router").post(routerController);
 v2.route("/router").post((req, res) => {
     const action = String(req.query.action);
     if (routes[action]) {
