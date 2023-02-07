@@ -8,11 +8,7 @@ enum Button {
     Minus
 }
 
-console.log(JSON.stringify({ btn: Button.Plus }));
-console.log(JSON.stringify({ btn: Button.Minus }));
-
 plusBtn?.addEventListener("click", () => {
-    console.log("clicked plus")
     fetch("http://localhost:3000/plus", {
         method: "POST",
         headers: {
@@ -29,7 +25,6 @@ plusBtn?.addEventListener("click", () => {
 })
 
 minusBtn?.addEventListener("click", () => {
-    console.log("clicked plus minus")
     fetch("http://localhost:3000/minus", {
         method: "POST",
         headers: {
