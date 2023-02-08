@@ -29,7 +29,7 @@ const a: A = {
 };
 
 function summ(a: A): number {
-    const x = Object.keys(a)
+    return Object.keys(a)
         .map(k => {
             const elem = a[k];
             if (elem === undefined || elem.cvalue === undefined) return 2022;
@@ -38,8 +38,6 @@ function summ(a: A): number {
             return summ(elem.cvalue);
         })
         .reduce((acc, n) => acc += n, 0);
-
-    return x;
 }
 
 console.log(summ(a)); // return 4067
