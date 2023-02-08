@@ -17,7 +17,7 @@ const a = {
     // 2022
     },
     three: {
-        cvalue: "hello"
+        cvalue: "hello" // 2022
     }
 };
 function summ(a) {
@@ -30,11 +30,11 @@ function summ(a) {
             return +elem.cvalue || 2022;
         if (typeof elem.cvalue === "number")
             return elem.cvalue;
-        if (elem.cvalue !== undefined)
-            return summ(elem.cvalue);
-        return elem.cvalue;
+        // if (elem.cvalue !== undefined) return summ(elem.cvalue);
+        // return elem.cvalue;
+        return summ(elem.cvalue);
     })
         .reduce((acc, n) => acc += n, 0);
     return x;
 }
-console.log(summ(a)); // return 2045
+console.log(summ(a)); // return 4067
