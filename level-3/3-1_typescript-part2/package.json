@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prebuild": "rimraf ./dist",
     "build": "tsc",
-    "start": "node dist/app.js",
-    "ts": "npm run build && npm run start"
+    "buttons": "npm run build && node dist/buttons.js",
+    "cvalues": "npm run build && node dist/cvalues.js"
   },
   "keywords": [],
   "author": "",
