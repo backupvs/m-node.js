@@ -35,8 +35,7 @@ function summ(a: A): number {
             if (elem === undefined || elem.cvalue === undefined) return 2022;
             if (typeof elem.cvalue === "string") return +elem.cvalue || 2022;
             if (typeof elem.cvalue === "number") return elem.cvalue;
-            if (elem.cvalue !== undefined) return summ(elem.cvalue);
-            return elem.cvalue;
+            return summ(elem.cvalue);
         })
         .reduce((acc, n) => acc += n, 0);
 
