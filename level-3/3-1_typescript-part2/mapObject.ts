@@ -17,5 +17,4 @@ function mapObject<Value, Result>(
     return newObject;
 }
 
-
 const newObj = mapObject({ "roma": 5, "vasya": 2 }, (x) => x > 2); // { "roma": true, "vasya": false }
