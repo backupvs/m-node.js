@@ -21,7 +21,7 @@ const a = {
     }
 };
 function summ(a) {
-    const x = Object.keys(a)
+    return Object.keys(a)
         .map(k => {
         const elem = a[k];
         if (elem === undefined || elem.cvalue === undefined)
@@ -33,6 +33,5 @@ function summ(a) {
         return summ(elem.cvalue);
     })
         .reduce((acc, n) => acc += n, 0);
-    return x;
 }
 console.log(summ(a)); // return 4067

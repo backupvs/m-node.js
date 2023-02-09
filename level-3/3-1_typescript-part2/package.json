@@ -8,7 +8,8 @@
     "prebuild": "rimraf ./dist",
     "build": "tsc",
     "buttons": "npm run build && node dist/buttons.js",
-    "cvalues": "npm run build && node dist/cvalues.js"
+    "cvalues": "npm run build && node dist/cvalues.js",
+    "mapObject": "npm run build && node dist/mapObject.js"
   },
   "keywords": [],
   "author": "",
