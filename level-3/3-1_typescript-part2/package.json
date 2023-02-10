@@ -9,7 +9,8 @@
     "build": "tsc",
     "buttons": "npm run build && node dist/buttons.js",
     "cvalues": "npm run build && node dist/cvalues.js",
-    "mapObject": "npm run build && node dist/mapObject.js"
+    "mapObject": "npm run build && node dist/mapObject.js",
+    "utilityTypes": "npm run build && node dist/utilityTypes.js"
   },
   "keywords": [],
   "author": "",
