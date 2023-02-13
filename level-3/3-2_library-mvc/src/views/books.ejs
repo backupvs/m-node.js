@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Books library</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="library Sh++">
+    <link rel="stylesheet" href="http://localhost:3000/libs.min.css">
+    <link rel="stylesheet" href="http://localhost:3000/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+        crossorigin="anonymous" /> 
+    <link rel="shortcut icon" href="http://localhost:3000/favicon.png">
+</head>
+
+<body data-gr-c-s-loaded="true" class="">
+
+    <%- include("./partials/_header.ejs"); %>
+
+    <section id="main" class="main-wrapper">
+        <div class="container">
+            <div id="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <% books.forEach(book => { %>
+                    <div data-book-id="<%= book.id %>" class=" book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                        <div class="book">
+                            <a href="http://localhost/books/<%= book.id %>"><img src="<%= book.image_url %>"
+                                    alt="<%= book.title %>">
+                                <div data-title="<%= book.title %>" class="blockI" style="height: 46px;">
+                                    <div data-book-title="<%= book.title %>" class="title size_text">
+                                        <%= book.title %>
+                                    </div>                                        
+                                    <div data-book-author="<%= book.author %>" class="author">
+                                        <%= book.author %>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="http://localhost:3000/book/<%= book.id %>">
+                                <button type="button" class="details btn btn-success">Читать</button>
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <center>
+            <% if (offset !== 0) { %>
+                <a class="btn btn-primary" 
+                    href="http://localhost:3000/?offset=<%= offset - limit %>&limit=<%= limit %>" 
+                    role="button">Назад</a>
+            <% } %>
+            <% if (numberOfBooks > offset + limit) { %>
+                <a class="btn btn-primary" 
+                    href="http://localhost:3000/?offset=<%= offset + limit %>&limit=<%= limit %>" 
+                    role="button">Вперед</a>
+            <% } %>
+        </center>
+
+    </section>
+
+    <%- include("./partials/_footer.ejs"); %>
+
+</body>
+
+</html>
