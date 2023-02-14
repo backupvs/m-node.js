@@ -16,7 +16,7 @@ export class Book {
      * 
      * @param offset Offset from first book. 0 by default
      * @param limit Number of books to get. Value from environment variable by default
-     * @returns 
+     * @returns Promise to get array of all books.
      */
     static async findAll(offset: number = 0, limit: number = +process.env.BOOKS_LIMIT!) {
         const [books] = await db.execute(
@@ -28,9 +28,24 @@ export class Book {
     }
 
     /**
+     * Makes query to db to get
+     * 
+     * @param id Requested id.
+     * @returns Promise to get book by requested id.
+     */
+    static async findById(id: string) {
+        const [book] = await db.execute(
+            await sqlReader.getQueryFrom("getBookById"),
+            [id]
+        );
+
+        return book;
+    }
+
+    /**
      * Makes query to db to count all books.
      * 
-     * @returns Promise of getting number of all books
+     * @returns Promise to get number of all books.
      */
     static async getNumberOfAll() {
         const [countResult] = await db.execute(await sqlReader.getQueryFrom("getBooksCount"));

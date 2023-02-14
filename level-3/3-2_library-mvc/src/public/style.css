@@ -283,7 +283,8 @@ html, body {
           padding-bottom: 10px;
           line-height: 17px;
           font-size: 14px;
-          white-space: nowrap;
+          /* white-space: nowrap; */
+          white-space: normal;
           text-overflow: ellipsis;
           overflow: hidden; }
           .main-wrapper .book_block #id .bookLastInfo .bookRow .properties {
