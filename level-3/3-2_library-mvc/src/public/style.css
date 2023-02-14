@@ -143,35 +143,6 @@ html, body {
           .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemList:hover {
             opacity: 1; }
 
-/*----------------------------------- .sidebar2  ----------------------------*/
-.sidebar2 {
-  text-align: center; }
-  .sidebar2 .nav2 .filterBlock {
-    border-bottom: 1px solid rgba(34, 36, 38, 0.15);
-    padding: 10px; }
-    .sidebar2 .nav2 .filterBlock .active {
-      border-bottom: 1px solid #27ae60;
-      padding-bottom: 10px; }
-    .sidebar2 .nav2 .filterBlock a {
-      padding-left: 1%;
-      padding-right: 1%;
-      padding-bottom: 10px;
-      line-height: 80px;
-      color: #2c3e50;
-      text-transform: uppercase;
-      font-size: 81%;
-      white-space: nowrap; }
-      .sidebar2 .nav2 .filterBlock a:hover {
-        font-weight: bold; }
-
-.loader {
-  position: absolute;
-  top: 0;
-  right: 10px;
-  display: none; }
-  .loader img {
-    height: 20px; }
-
 /*-------------------------------- .main-wrapper  ---------------------------*/
 .main-wrapper {
   position: relative;

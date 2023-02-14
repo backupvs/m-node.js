@@ -3,11 +3,12 @@ import sqlReader from "@services/sqlreader.service";
 
 export class Book {
     constructor(
+        public id: number,
         public title: string,
         public about: string,
         public author: string,
         public image_url: string,
-        public release_year: string
+        public release_year: number
     ) {}
 
     /**
@@ -41,7 +42,7 @@ export class Book {
 
         return book;
     }
-
+    
     /**
      * Makes query to db to count all books.
      * 
@@ -50,6 +51,26 @@ export class Book {
     static async getNumberOfAll() {
         const [countResult] = await db.execute(await sqlReader.getQueryFrom("getBooksCount"));
         return countResult[0]["COUNT(*)"];
+    }
+
+    /**
+     * Increments views count of book by id
+     * 
+     * @param id Requested id.
+     * @returns Promise to increment views count.
+     */
+    static async increaseViewsById(id: string) {
+        return db.execute(
+            await sqlReader.getQueryFrom("increaseViewsCount"),
+            [id]
+        );
+    }
+
+    static async increaseWantClicksById(id: string) {
+        return db.execute(
+            await sqlReader.getQueryFrom("increaseWantClicksCount"),
+            [id]
+        );
     }
 }
 
