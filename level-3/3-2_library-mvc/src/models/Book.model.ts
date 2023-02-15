@@ -29,7 +29,7 @@ export class Book {
     }
 
     /**
-     * Makes query to db to get
+     * Makes query to db to get.
      * 
      * @param id Requested id.
      * @returns Promise to get book by requested id.
@@ -54,7 +54,7 @@ export class Book {
     }
 
     /**
-     * Increments views count of book by id
+     * Increments views count of book by id.
      * 
      * @param id Requested id.
      * @returns Promise to increment views count.
@@ -66,6 +66,12 @@ export class Book {
         );
     }
 
+    /**
+     * Increments want button clicks count of book by id.
+     * 
+     * @param id Requested id.
+     * @returns Promise to increment want button clicks count.
+     */
     static async increaseWantClicksById(id: string) {
         return db.execute(
             await sqlReader.getQueryFrom("increaseWantClicksCount"),
