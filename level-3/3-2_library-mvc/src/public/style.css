@@ -267,7 +267,7 @@ html, body {
             color: #2c3e50;
             word-break: break-word;
             font-weight: 600; }
-      .main-wrapper .book_block #id .btnBookID {
+      .main-wrapper .book_block #id #btn-want {
         margin-top: 30px;
         margin-bottom: 30px;
         font-family: Arial, sans-serif;
@@ -281,7 +281,7 @@ html, body {
              -o-border-image: initial;
                 border-image: initial;
         outline: none; }
-        .main-wrapper .book_block #id .btnBookID:hover {
+        .main-wrapper .book_block #id #btn-want:hover {
           text-decoration: none;
           color: #34b96c;
           background: white;
@@ -380,10 +380,53 @@ html, body {
     border: 2px solid #2cc56d;
     border-radius: 10px; }
 
-
 #loading {
   text-align: center;
   display: none; }
+
+/*------------------------------- .popup  --------------------------*/
+
+#want-popup {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  z-index: 999;
+  justify-content: center;
+  -ms-align-items: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal-dialog {
+  -webkit-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all .15s ease;
+  -o-transition: all .15s ease;
+  transition: all 0.15s ease;
+}
+
+#want-popup:target {
+  opacity: 1;
+  visibility: visible;
+}
+
+#want-popup:target .modal-dialog{
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}
 
 /*------------------------------- .footer-wrapper  --------------------------*/
 .footer-wrapper {
@@ -457,7 +500,7 @@ html, body {
   .btnBlock {
     text-align: center;
     padding: 25px 0 10px 0; }
-    .btnBlock .btnBookID {
+    .btnBlock #btn-want {
       float: none !important; }
   .bookDescription {
     max-height: 100% !important;
