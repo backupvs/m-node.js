@@ -1,2 +1,2 @@
-SELECT COUNT(*)
+SELECT COUNT(*) as count
 FROM books;

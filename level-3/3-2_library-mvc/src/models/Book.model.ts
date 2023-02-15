@@ -1,5 +1,6 @@
 import db from "@configs/db.config";
 import sqlReader from "@services/sqlreader.service";
+import { RowDataPacket } from "mysql2/promise";
 
 export class Book {
     constructor(
@@ -12,35 +13,41 @@ export class Book {
     ) {}
 
     /**
-     * Makes query to db to get books 
-     * with specified offset and limit.
-     * 
-     * @param offset Offset from first book. 0 by default
-     * @param limit Number of books to get. Value from environment variable by default
-     * @returns Promise to get array of all books.
-     */
-    static async findAll(offset: number = 0, limit: number = +process.env.BOOKS_LIMIT!) {
-        const [books] = await db.execute(
-            await sqlReader.getQueryFrom("selectBooksWithLimit"),
-            [offset.toString(), limit.toString()]
-        );
-
-        return books;
-    }
-
-    /**
      * Makes query to db to get.
      * 
      * @param id Requested id.
      * @returns Promise to get book by requested id.
      */
     static async findById(id: string) {
-        const [book] = await db.execute(
+        const [book] = await db.execute<RowDataPacket[]>(
             await sqlReader.getQueryFrom("getBookById"),
             [id]
         );
 
         return book;
+    }
+
+    /**
+     * Finds books by specified parameters 
+     * and returns with specified offset and limit.
+     * 
+     * @param search Search string.
+     * @param author Author to search by.
+     * @param releaseYear Release year to search by.
+     * @param offset Offset from first book.
+     * @param limit Number of books to get.
+     * @returns Promise to get array of books by search parameters
+     */
+    static async find(search: string, author: string, releaseYear: string, 
+        offset: string, 
+        limit: string
+        ) {
+        const [result] = await db.execute<RowDataPacket[]>(
+            await sqlReader.getQueryFrom("findBook"),
+            { search, author, releaseYear, offset, limit }
+        );
+
+        return result;
     }
     
     /**
@@ -49,8 +56,10 @@ export class Book {
      * @returns Promise to get number of all books.
      */
     static async getNumberOfAll() {
-        const [countResult] = await db.execute(await sqlReader.getQueryFrom("getBooksCount"));
-        return countResult[0]["COUNT(*)"];
+        const [countResult] = await db.execute<RowDataPacket[]>(
+            await sqlReader.getQueryFrom("getBooksCount")
+        );
+        return countResult[0].count;
     }
 
     /**

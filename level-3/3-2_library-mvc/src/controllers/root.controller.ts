@@ -1,18 +1,16 @@
 import { Request, Response } from "express";
 import Book from "@models/Book.model";
 
-export const getAllBooks = async (req: Request, res: Response) => {
-    const numberOfBooks = await Book.getNumberOfAll();
-    let limit = req.query.limit ? +req.query.limit || +process.env.BOOKS_LIMIT! : +process.env.BOOKS_LIMIT!;
-    let offset = req.query.offset ? +req.query.offset || 0 : 0;
+export const findBooks = async (req: Request, res: Response) => {
+    const offset = +req.query.offset!;
+    const limit = +req.query.limit!;
+    const numberOfBooks = req.query.numberOfBooks!;
 
-    if (limit <= 0) limit = +process.env.BOOKS_LIMIT!;
-    if (offset >= numberOfBooks) offset = numberOfBooks - limit;
-    if (offset < 0) offset = 0;
+    const search = makeSearchQuery(req.query.search?.toString() || "");
+    const author = makeSearchQuery(req.query.author?.toString() || "");
+    const year = makeSearchQuery(req.query.year?.toString() || "");
 
-    // if (isBadQueries) return res.redirect(`/?offset=${offset}&limit=${limit}`);
-
-    const books = await Book.findAll(offset, limit);
+    const books = await Book.find(search, author, year, offset.toString(), limit.toString());
     
     res.render("books", {
         books,
@@ -22,4 +20,6 @@ export const getAllBooks = async (req: Request, res: Response) => {
     });
 }
 
-export default { getAllBooks };
+const makeSearchQuery = (query: string) => "%" + query + "%";
+
+export default { findBooks };

@@ -385,8 +385,7 @@ html, body {
   text-align: center;
   display: none; }
 
-/*------------------------------- .popup  --------------------------*/
-
+/*------------------------------- Modal dialog  --------------------------*/
 #want-info {
   position: fixed;
   width: 100%;
