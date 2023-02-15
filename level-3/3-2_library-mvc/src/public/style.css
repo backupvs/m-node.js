@@ -152,6 +152,10 @@ html, body {
   padding: 10px 0 20px 0; }
   .main-wrapper #pattern {
     display: none; }
+  .main-wrapper #result-label {
+  opacity: 0;
+  padding-top: 20px;
+  animation: showSmooth 0.3s forwards }  
   .main-wrapper .book_item .book {
     opacity: 0;
     text-align: center;

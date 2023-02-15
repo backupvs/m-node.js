@@ -16,7 +16,8 @@ export const findBooks = async (req: Request, res: Response) => {
         books,
         numberOfBooks,
         offset,
-        limit
+        limit,
+        searchQuery: req.query.search
     });
 }
 
