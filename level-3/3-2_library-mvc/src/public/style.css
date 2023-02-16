@@ -435,6 +435,13 @@ html, body {
   transform: scale(1);
 }
 
+/* Logout button */
+
+.logout {
+  text-align: right;
+  line-height: 90px;
+}
+
 /*------------------------------- .footer-wrapper  --------------------------*/
 .footer-wrapper {
   position: absolute;

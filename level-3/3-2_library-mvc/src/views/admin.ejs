@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ua">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Books library</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="library Sh++">
+    <link rel="stylesheet" href="http://localhost:3000/libs.min.css">
+    <link rel="stylesheet" href="http://localhost:3000/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+        crossorigin="anonymous" />
+    <link rel="shortcut icon" href="http://localhost:3000/favicon.png">
+</head>
+
+<body>
+    <section id="header" class="header-wrapper">
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="col-xs-5 col-sm-2 col-md-2 col-lg-2">
+                    <div class="logo">
+                        <a href="http://localhost:3000/" class="navbar-brand">
+                            <span class="sh">Ш</span><span class="plus" style="padding-left: -10px;">++</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-2 col-sm-3 col-md-2 col-lg-2" style="float: right">
+                    <div class="logout">
+                        <button id="logout-btn" type="button" class="btn btn-success" onclick="logout()">Вийти</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </section>
+
+    <section id="main" class="main-wrapper" style="min-height: 0%;">
+        <div class="container">
+            <center>You are in admin panel!</center>
+        </div>
+    </section>
+
+    <script>
+        function logout() {
+            window.location.href = "/";
+
+            fetch("http://localhost:3000/admin", {
+                headers: {
+                    "Authorization": "Basic _"
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
