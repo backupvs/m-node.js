@@ -1,10 +1,11 @@
 import "module-alias/register";
 import "dotenv/config";
 import path from "path";
-import express from "express"; 
+import express from "express";
 import bodyParser from "body-parser";
 import rootRouter from "@routes/root.router";
 import booksRouter from "@routes/books.router";
+import adminRouter from "@routes/admin.router";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +23,7 @@ app.set("view engine", "ejs");
 // Routers
 app.use("/", rootRouter);
 app.use("/books", booksRouter);
+app.use("/admin", adminRouter);
 
 app.listen(PORT, () => {
     console.log(`Start listening on port ${PORT}`);

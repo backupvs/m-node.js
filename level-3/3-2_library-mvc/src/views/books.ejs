@@ -20,9 +20,17 @@
     <section id="main" class="main-wrapper">
         <div class="container">
             <div id="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
                 <% if (searchQuery) { %>
-                <div id="result-label">Результати пошуку "<%= searchQuery %>": </div>
+                <div id="result-label">
+                    <% if (books.length === 0) { %>
+                        На жаль, за запитом "<%= searchQuery %>" нічого не знайдено
+                    <% } else {%>
+                        Результати пошуку "<%= searchQuery %>": 
+                    <% } %>
+                </div>
                 <% } %>
+
                 <% books.forEach(book => { %>
                     <div class=" book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
                         <div class="book">
@@ -54,7 +62,6 @@
                     role="button">Вперед</a>
             <% } %>
         </center>
-
     </section>
 
     <%- include("./partials/_footer.ejs"); %>
