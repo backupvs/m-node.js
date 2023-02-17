@@ -1,6 +1,6 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 
-export const showAdminPanel = (res: Response) => {
+export const showAdminPanel = (req: Request, res: Response) => {
     res.render("admin");
 };
 

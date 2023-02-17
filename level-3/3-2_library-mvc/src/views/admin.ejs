@@ -7,11 +7,81 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="library Sh++">
-    <link rel="stylesheet" href="http://localhost:3000/libs.min.css">
     <link rel="stylesheet" href="http://localhost:3000/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
         crossorigin="anonymous" />
     <link rel="shortcut icon" href="http://localhost:3000/favicon.png">
+
+    <style>
+        .container-post-form {
+            border: 1px solid rgb(222, 222, 222);
+            padding: 15px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 0px;
+        }
+
+        form textarea {
+            resize: none;
+            min-height: 90px;
+        }
+
+        #addButton {
+            margin-bottom: -15px;
+        }
+
+        #imgPreview {
+            height: 157px;
+            width: 157px;
+            border: 1px solid gray;
+            margin: 10px 0 20px 0;
+        }
+
+        .custom-file-input {
+            color: transparent;
+            outline: none !important;
+            box-shadow: none;
+            width: 157px;
+        }
+
+        .custom-file-input::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+
+        .custom-file-input::before {
+            content: "Вибрати зображення";
+            color: black;
+            display: inline-block;
+            background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+            border: 1px solid #999;
+            border-radius: 2px;
+            padding: 5px 8px;
+            outline: none;
+            white-space: nowrap;
+            user-select: none;
+            cursor: pointer;
+            text-shadow: 1px 1px #fff;
+            font-weight: 700;
+            font-size: 10pt;
+        }
+
+        .custom-file-input:hover::before {
+            border-color: black;
+        }
+
+        .custom-file-input:active {
+            outline: 0;
+        }
+
+        .custom-file-input:active::before {
+            background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+        }
+    </style>
 </head>
 
 <body>
@@ -21,13 +91,13 @@
                 <div class="col-xs-5 col-sm-2 col-md-2 col-lg-2">
                     <div class="logo">
                         <a href="http://localhost:3000/" class="navbar-brand">
-                            <span class="sh">Ш</span><span class="plus" style="padding-left: -10px;">++</span>
+                            <span class="sh">Ш</span><span class="plus">++</span>
                         </a>
                     </div>
                 </div>
                 <div class="col-xs-2 col-sm-3 col-md-2 col-lg-2" style="float: right">
                     <div class="logout">
-                        <button id="logout-btn" type="button" class="btn btn-success" onclick="logout()">Вийти</button>
+                        <button id="logout-btn" type="button" class="btn btn-danger" onclick="logout()">Вийти</button>
                     </div>
                 </div>
             </div>
@@ -36,7 +106,72 @@
 
     <section id="main" class="main-wrapper" style="min-height: 0%;">
         <div class="container">
-            <center>You are in admin panel!</center>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <table id="booksTable" class="table table-striped table-bordered table-sm" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="th-sm">Назва книги</th>
+                            <th class="th-sm">Автори</th>
+                            <th class="th-sm">Рік</th>
+                            <th class="th-sm">Дії</th>
+                            <th class="th-sm">Кліків</th>
+                            <th class="th-sm">Відвідувань</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Книга 1</td>
+                            <td>Автор 1, Автор 2</td>
+                            <td>2020</td>
+                            <td><a href="">Видалити</a></td>
+                            <td>2</td>
+                            <td>119</td>
+                        </tr>
+                        <tr>
+                            <td>Книга 2</td>
+                            <td>Автор 1</td>
+                            <td>2016</td>
+                            <td><a href="">Видалити</a></td>
+                            <td>7</td>
+                            <td>89</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="container-post-form">
+                    <legend>Додати книгу</legend>
+                    <form method="post">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="bookTitle" placeholder="Назва книги"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="bookYear" placeholder="Рік видання"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="author" placeholder="Автор" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Опис книги" required></textarea>
+                            </div>
+                            <div class="from-group">
+                                <button type="submit" id="addButton" class="btn btn-success">Додати</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div class="form-group" style="align-items: center;">
+                                    <div id="imgPreview"></div>
+                                    <input type="file" class="custom-file-input" name="bookImage" required>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </section>
 
