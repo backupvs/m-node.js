@@ -10,16 +10,10 @@
     <link rel="stylesheet" href="http://localhost:3000/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
-        crossorigin="anonymous" />
+    <script src="https://kit.fontawesome.com/4928383bf0.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="http://localhost:3000/favicon.png">
 
     <style>
-        .container-post-form {
-            border: 1px solid rgb(222, 222, 222);
-            padding: 15px;
-        }
-
         form {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -31,15 +25,50 @@
             min-height: 90px;
         }
 
+        .container-post-form {
+            border: 1px solid rgb(222, 222, 222);
+            padding: 15px;
+        }
+
+        .img-input-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 20px;
+        }
+
+        .btn-img-input-wrap {
+            display: flex;
+            align-items: center;
+        }
+
+        #clearImg {
+            margin-left: 5px;
+            visibility: hidden;
+            cursor: pointer;
+            opacity: 80%;
+        }
+
+        #clearImg:hover {
+            opacity: 100%;
+        }
+
         #addButton {
             margin-bottom: -15px;
         }
 
-        #imgPreview {
+        #imgPreviewPlace {
             height: 157px;
             width: 157px;
             border: 1px solid gray;
             margin: 10px 0 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        #imgPreview {
+            height: 100%;
+            width: auto;
         }
 
         .custom-file-input {
@@ -162,10 +191,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-3">
+                            <div class="img-input-wrap">
                                 <div class="form-group" style="align-items: center;">
-                                    <div id="imgPreview"></div>
-                                    <input type="file" class="custom-file-input" name="bookImage" required>
+                                    <div id="imgPreviewPlace"><img id="imgPreview"></div>
+                                    <div class="btn-img-input-wrap">
+                                        <input type="file" accept="image/*" class="custom-file-input" name="bookImage"
+                                            id="imgInput" required>
+                                        <i class="fa-solid fa-trash-can" id="clearImg"
+                                            title="Видалити вибране зображення" onclick="clearImgPlace()"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -185,6 +219,29 @@
                 }
             });
         }
+
+        // Image preview
+        const imgInput = document.getElementById("imgInput");
+        const image = document.getElementById("imgPreview");
+        const clearImg = document.getElementById("clearImg");
+
+        const showClearImgIcon = () => clearImg.style.visibility = "visible";
+        const hideClearImgIcon = () => clearImg.style.visibility = "hidden";
+
+        imgInput.onchange = event => {
+            const [file] = imgInput.files;
+            console.log(file);
+            if (file) {
+                image.src = URL.createObjectURL(file);
+                showClearImgIcon();
+            }
+        }
+
+        function clearImgPlace() {
+            hideClearImgIcon();
+            image.src = "";
+        }
+
     </script>
 </body>
 
