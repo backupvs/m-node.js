@@ -1,16 +1,38 @@
-import db from "@configs/db.config";
+import db from "@services/db.service";
 import sqlReader from "@services/sqlreader.service";
 import { RowDataPacket } from "mysql2/promise";
 
+/**
+ * Represents a book entry in database.
+ */
 export class Book {
     constructor(
-        public id: number,
         public title: string,
         public about: string,
         public author: string,
         public image_url: string,
-        public release_year: number
+        public release_year: number,
+        public pages: number
     ) {}
+
+    /**
+     * Makes query to db to create book.
+     * 
+     * @returns Promise to create book.
+     */
+    async save() {
+        return db.execute(
+            await sqlReader.getQueryFrom("createBook"),
+            [
+                this.title,
+                this.about,
+                this.author,
+                this.image_url,
+                this.release_year.toString(),
+                this.pages.toString()
+            ]
+        );
+    }
 
     /**
      * Makes query to db to get.
