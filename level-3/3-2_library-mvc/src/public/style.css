@@ -450,10 +450,11 @@ html, body {
 
 .container-post-form form textarea {
   resize: none;
-  min-height: 90px;
+  min-height: 150px;
 }
 
 .img-input-wrap {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -481,10 +482,10 @@ html, body {
 }
 
 #imgPreviewPlace {
-  height: 157px;
+  height: 200px;
   width: 157px;
   border: 1px solid gray;
-  margin: 10px 0 20px 0;
+  margin: 0px 0 20px 0;
   display: flex;
   justify-content: center;
 }
