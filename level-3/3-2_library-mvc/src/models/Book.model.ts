@@ -1,5 +1,5 @@
 import db from "@services/db.service";
-import sqlReader from "@services/sqlreader.service";
+import { getQueryFrom } from "@services/sqlreader.service";
 import { RowDataPacket } from "mysql2/promise";
 
 /**
@@ -22,7 +22,7 @@ export class Book {
      */
     async save() {
         return db.execute(
-            await sqlReader.getQueryFrom("createBook"),
+            await getQueryFrom("createBook"),
             [
                 this.title,
                 this.about,
@@ -35,18 +35,31 @@ export class Book {
     }
 
     /**
-     * Makes query to db to get.
+     * Makes query to db to get book by id.
      * 
      * @param id Requested id.
      * @returns Promise to get book by requested id.
      */
     static async findById(id: string) {
         const [book] = await db.execute<RowDataPacket[]>(
-            await sqlReader.getQueryFrom("getBookById"),
+            await getQueryFrom("getBookById"),
             [id]
         );
 
         return book;
+    }
+
+    /**
+     * Makes query to db to delete book by id.
+     * 
+     * @param id Requested id.
+     * @returns Promise to delete book.
+     */
+    static async deleteById(id: string) {
+        return db.execute<RowDataPacket[]>(
+            await getQueryFrom("deleteBookById"),
+            [id]
+        );
     }
 
     /**
@@ -61,15 +74,30 @@ export class Book {
      * @returns Promise to get array of books by search parameters
      */
     static async find(search: string, author: string, releaseYear: string, 
-        offset: string, 
+        offset: string,
         limit: string
         ) {
         const [result] = await db.execute<RowDataPacket[]>(
-            await sqlReader.getQueryFrom("findBook"),
+            await getQueryFrom("findBook"),
             { search, author, releaseYear, offset, limit }
         );
 
         return result;
+    }
+
+    /**
+     * Makes query to db to get all books
+     * and returns array with specified offset and limit.
+     * 
+     * @returns Array of all books.
+     */
+    static async getAllBooks(offset: string, limit: string) {
+        const [books] = await db.execute<RowDataPacket[]>(
+            await getQueryFrom("getAllBooks"),
+            { offset, limit }
+        );
+
+        return books;
     }
     
     /**
@@ -79,7 +107,7 @@ export class Book {
      */
     static async getNumberOfAll() {
         const [countResult] = await db.execute<RowDataPacket[]>(
-            await sqlReader.getQueryFrom("getBooksCount")
+            await getQueryFrom("getBooksCount")
         );
         return countResult[0].count;
     }
@@ -92,7 +120,7 @@ export class Book {
      */
     static async increaseViewsById(id: string) {
         return db.execute(
-            await sqlReader.getQueryFrom("increaseViewsCount"),
+            await getQueryFrom("increaseViewsCount"),
             [id]
         );
     }
@@ -105,10 +133,26 @@ export class Book {
      */
     static async increaseWantClicksById(id: string) {
         return db.execute(
-            await sqlReader.getQueryFrom("increaseWantClicksCount"),
+            await getQueryFrom("increaseWantClicksCount"),
             [id]
         );
     }
+
+    /**
+     * Makes query to db to get image url of book by id.
+     * 
+     * @param id Requested id.
+     * @returns Promise to get image url.
+     */
+    static async getImageNameById(id: string): Promise<string> {
+        const [result] = await db.execute<RowDataPacket[]>(
+            await getQueryFrom("getImageUrlById"),
+            [id]
+        );
+        const imageUrl = result[0]["image_url"];
+
+        return imageUrl.split(".com/")[1];
+    }
 }
 
-export default Book; 
+export default Book;

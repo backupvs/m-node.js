@@ -1,0 +1,30 @@
+<% const LIMIT_PAGES = 5 %>
+
+<% if (totalPages > 0) { %>
+    <ul class="pagination text-center">
+        <% if (currentPage == 1) { %>
+            <li class="disabled"><a>Початок</a></li>
+        <% } else { %>
+            <li><a href="http://localhost:3000/admin?page=1">Початок</a></li>
+        <% } %>
+        <% let i = (Number(currentPage) > LIMIT_PAGES ? Number(currentPage) - (LIMIT_PAGES - 1) : 1) %>
+        <% if (i !== 1) { %>
+            <li class="disabled"><a>...</a></li>
+        <% } %>
+        <% for (; i <= (Number(currentPage) + (LIMIT_PAGES - 1)) && i <= totalPages; i++) { %>
+            <% if (i == currentPage) { %>
+                <li class="active"><a><%= i %></a></li>
+            <% } else { %>
+                <li><a href="http://localhost:3000/admin?page=<%= i %>"><%= i %></a></li>
+            <% } %>
+            <% if (i == Number(currentPage) + (LIMIT_PAGES - 1) && i < totalPages) { %>
+                <li class="disabled"><a>...</a></li>
+            <% } %>
+        <% } %>
+        <% if (currentPage == totalPages) { %>
+            <li class="disabled"><a>Кінець</a></li>
+        <% } else { %>
+            <li><a href="http://localhost:3000/admin?page=<%= totalPages %>">Кінець</a></li>
+        <% } %>
+    </ul>
+<% } %>

@@ -466,6 +466,27 @@ html, body {
   align-items: center;
 }
 
+.cover-icon {
+  width: 20px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.title-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.btn-delete {
+  cursor: pointer;
+}
+
+#booksTable td {
+  vertical-align: middle;
+}
+
 #clearImg {
   margin-left: 5px;
   visibility: hidden;

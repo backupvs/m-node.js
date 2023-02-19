@@ -9,7 +9,7 @@ import fs from "fs/promises";
  */
 export async function getQueryFrom(filename: string) {
     const file = await fs.readFile(path.join(process.env.SQL_QUERIES_PATH!, filename + ".sql"));
-    return file.toString().replace(/(\r\n|\n|\r)/gm," ");
+    return file.toString().replace(/(\r\n|\n|\r|\t)/gm," ");
 }
 
-export default { getQueryFrom }
+export const sqlReaderService = { getQueryFrom }

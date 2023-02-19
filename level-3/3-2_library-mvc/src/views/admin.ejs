@@ -43,38 +43,42 @@
                 <table id="booksTable" class="table table-striped table-bordered table-sm" cellspacing="0">
                     <thead>
                         <tr>
-                            <th class="th-sm">Назва книги</th>
-                            <th class="th-sm">Автори</th>
-                            <th class="th-sm">Рік</th>
-                            <th class="th-sm">Дії</th>
-                            <th class="th-sm">Кліків</th>
-                            <th class="th-sm">Відвідувань</th>
+                            <th class="col-md-8">Назва книги</th>
+                            <th class="col-md-8">Автори</th>
+                            <th class="col-md-1">Рік</th>
+                            <th class="col-md-1">Дії</th>
+                            <th class="col-md-1">Кліків</th>
+                            <th class="col-md-1">Відвідувань</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Книга 1</td>
-                            <td>Автор 1, Автор 2</td>
-                            <td>2020</td>
-                            <td><a href="">Видалити</a></td>
-                            <td>2</td>
-                            <td>119</td>
-                        </tr>
-                        <tr>
-                            <td>Книга 2</td>
-                            <td>Автор 1</td>
-                            <td>2016</td>
-                            <td><a href="">Видалити</a></td>
-                            <td>7</td>
-                            <td>89</td>
-                        </tr>
+                        <% books.forEach(book => { %>
+                            <tr>
+                                <td>
+                                    <a class="title-link" href="http://localhost:3000/books/<%= book.id %>" target="_blank">
+                                        <div class="cover-icon">
+                                            <img class="cover-icon" src="<%= book.image_url %>" alt="<%= book.title %>">
+                                        </div>
+                                        <%= book.title %>
+                                    </a>
+                                </td>
+                                <td><%= book.author %></td>
+                                <td><%= book.release_year %></td>
+                                <td><a class="btn-delete" onclick="deleteBook('<%= book.id %>')">Видалити</a></td>
+                                <td><%= book.want_clicks_count %></td>
+                                <td><%= book.views_count %></td>
+                            </tr>
+                        <% }) %>
                     </tbody>
                 </table>
+                <center class="pagination-block" style="padding-bottom: 20px">
+                    <%- include("./partials/_pagination.ejs") %>
+                </center>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="container-post-form"> <!------------ TODO: input validation --------------->
+                <div class="container-post-form">
                     <legend>Додати книгу</legend>
-                    <form action="http://localhost:3000/books/add" method="post" enctype="multipart/form-data">
+                    <form id="postBookForm">
                         <div class="form-group">
                             <div class="form-group">
                                 <input type="text" class="form-control" name="bookTitle" placeholder="Назва книги"
@@ -82,13 +86,11 @@
                             </div>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="bookYear" placeholder="Рік видання"
-                                    pattern="\d+"
-                                    required>
+                                    pattern="\d{1,4}" required>
                             </div>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="pages" placeholder="Кількість сторінок"
-                                    pattern="\d+"
-                                    required>
+                                    pattern="\d{1,4}" required>
                             </div>
                             <div class="form-group">
                                 <input type="text" class="form-control" name="author" placeholder="Автор" required>
@@ -106,8 +108,8 @@
                                 <div class="form-group">
                                     <div id="imgPreviewPlace"><img id="imgPreview"></div>
                                     <div class="btn-img-input-wrap">
-                                        <input type="file" accept="image/png, image/jpeg" class="custom-file-input" name="bookImage"
-                                            id="imgInput" required>
+                                        <input type="file" accept="image/png, image/jpeg" class="custom-file-input"
+                                            name="bookImage" id="imgInput" required>
                                         <i class="fa-solid fa-trash-can" id="clearImg"
                                             title="Видалити вибране зображення" onclick="clearImgPlace()"></i>
                                     </div>
@@ -119,6 +121,50 @@
             </div>
         </div>
     </section>
+
+    <script>
+        const postBookForm = document.getElementById("postBookForm");
+
+        // Submit a book adding form
+        postBookForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(postBookForm);
+
+            try {
+                const response = await fetch("http://localhost:3000/books/add", { method: "POST", body: formData })
+                const jsonResponse = await response.json();
+                jsonResponse.ok ? notifySuccess("Книгу успішно додано") : notifyFailure("Книгу не було додано");
+                window.location.reload();
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
+        // Delete book by id
+        async function deleteBook(id) {
+            try {
+                const response = await fetch(`http://localhost:3000/books/delete?id=${id}`, { method: "DELETE" })
+                const jsonResponse = await response.json();
+                jsonResponse.ok ? notifySuccess("Книгу успішно видалено") : notifyFailure("Книгу не було видалено");
+                window.location.reload();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        /******** Notification ********/
+
+        function notifySuccess(text) {
+            alert(text);
+        }
+
+        function notifyFailure(text) {
+            alert(text);
+        }
+
+    </script>
+
 </body>
 
 </html>

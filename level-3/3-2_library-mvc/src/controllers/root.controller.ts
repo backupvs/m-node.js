@@ -19,4 +19,4 @@ export const findBooks = async (req: Request, res: Response) => {
 
 const createSearchQuery = (query: string | undefined): string => `%${query || ""}%`;
 
-export default { findBooks };
+export const rootController = { findBooks };
