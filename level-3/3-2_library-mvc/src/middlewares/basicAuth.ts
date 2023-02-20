@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express";
+import bcrypt from "bcrypt";
+import { User } from "@models/User.model";
 
-export const basicAuth = (req: Request, res: Response, next: NextFunction) => {
+export const basicAuth = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.get("Authorization")) return sendError(res);
 
     const [username, password] = parseCredentials(req.get("Authorization")!);
-    if (!compareCredentials(username, password)) return sendError(res);
+    if (!await compareCredentials(username, password)) return sendError(res);
 
     res.status(200);
     next();
@@ -23,8 +25,13 @@ function parseCredentials(credentials: string) {
     return [username, password];
 }
 
-function compareCredentials(username: string, password: string) {
-    return (username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD);
+
+
+async function compareCredentials(username: string, password: string) {
+    const [admin] = await User.getAdminByUsername(username);
+    if (!admin) return false;
+    const result = await bcrypt.compare(password, admin.password);
+    return result;
 }
 
 export default basicAuth;

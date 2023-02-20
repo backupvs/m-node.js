@@ -121,50 +121,6 @@
             </div>
         </div>
     </section>
-
-    <script>
-        const postBookForm = document.getElementById("postBookForm");
-
-        // Submit a book adding form
-        postBookForm.addEventListener("submit", async (event) => {
-            event.preventDefault();
-
-            const formData = new FormData(postBookForm);
-
-            try {
-                const response = await fetch("http://localhost:3000/books/add", { method: "POST", body: formData })
-                const jsonResponse = await response.json();
-                jsonResponse.ok ? notifySuccess("Книгу успішно додано") : notifyFailure("Книгу не було додано");
-                window.location.reload();
-            } catch (error) {
-                console.log(error);
-            }
-        });
-
-        // Delete book by id
-        async function deleteBook(id) {
-            try {
-                const response = await fetch(`http://localhost:3000/books/delete?id=${id}`, { method: "DELETE" })
-                const jsonResponse = await response.json();
-                jsonResponse.ok ? notifySuccess("Книгу успішно видалено") : notifyFailure("Книгу не було видалено");
-                window.location.reload();
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        /******** Notification ********/
-
-        function notifySuccess(text) {
-            alert(text);
-        }
-
-        function notifyFailure(text) {
-            alert(text);
-        }
-
-    </script>
-
 </body>
 
 </html>
