@@ -25,12 +25,19 @@ export const addBook = async (req: Request, res: Response) => {
     const book = new Book(
         req.body.bookTitle,
         req.body.about,
-        req.body.author,
         `https://${process.env.BUCKET_NAME}.s3.${process.env.BUCKET_REGION}.amazonaws.com/${generatedName}`,
         req.body.bookYear,
         req.body.pages
     );
+
     await book.save();
+    const authors = JSON.parse(req.body.authors);
+
+    for (let author of authors) {
+        if (!author) continue;
+        const authorId = await Book.addAuthor(author);
+        await book.addAssociation(authorId.toString());
+    }
 
     res.status(201).json({ ok: true });
 };
@@ -48,6 +55,6 @@ export const deleteBook = async (req: Request, res: Response, next: NextFunction
         console.log(error);
         res.status(500).json({ error: "internal error" });
     }
-}
+};
 
 export const booksController = { getBookById, increaseCounter, addBook, deleteBook };

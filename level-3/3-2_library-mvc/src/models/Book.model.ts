@@ -1,36 +1,52 @@
 import db from "@services/db.service";
 import { getQueryFrom } from "@services/sqlreader.service";
-import { RowDataPacket } from "mysql2/promise";
+import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 
 /**
  * Represents a book entry in database.
  */
 export class Book {
+    public id?: string;
+
     constructor(
         public title: string,
         public about: string,
-        public author: string,
         public image_url: string,
         public release_year: number,
-        public pages: number
-    ) {}
+        public pages: number,
+    ) { }
 
     /**
      * Makes query to db to create book.
      * 
      * @returns Promise to create book.
      */
-    async save() {
-        return db.execute(
-            await getQueryFrom("createBook"),
+    async save(): Promise<number> {
+        const [result] = await db.execute<ResultSetHeader>(
+            await getQueryFrom("addBook"),
             [
                 this.title,
                 this.about,
-                this.author,
                 this.image_url,
                 this.release_year.toString(),
                 this.pages.toString()
             ]
+        );
+        this.id = result.insertId.toString();
+
+        return result.insertId;
+    }
+
+    /**
+     * Makes query to add assosiation to book id with author id.
+     * 
+     * @param authorId Requested author id.
+     * @returns Promise to add assosiation to db.
+     */
+    async addAssociation(authorId: string) {
+        return db.execute(
+            await getQueryFrom("addAssociation"),
+            { authorId, bookId: this.id }
         );
     }
 
@@ -50,16 +66,20 @@ export class Book {
     }
 
     /**
-     * Makes query to db to delete book by id.
+     * Makes query to db to delete book by id
+     * and author if it is no longer assosiated with any book.
      * 
      * @param id Requested id.
-     * @returns Promise to delete book.
+     * @returns Promise to delete book and author.
      */
-    static async deleteById(id: string) {
-        return db.execute<RowDataPacket[]>(
+    static async deleteById(id: string): Promise<void> {
+        db.execute<RowDataPacket[]>(
             await getQueryFrom("deleteBookById"),
             [id]
-        );
+        ).then(async () => db.execute<RowDataPacket[]>(
+            await getQueryFrom("deleteUnrelatedAuthor"),
+            [id]
+        ));
     }
 
     /**
@@ -73,10 +93,10 @@ export class Book {
      * @param limit Number of books to get.
      * @returns Promise to get array of books by search parameters
      */
-    static async find(search: string, author: string, releaseYear: string, 
+    static async find(search: string, author: string, releaseYear: string,
         offset: string,
         limit: string
-        ) {
+    ) {
         const [result] = await db.execute<RowDataPacket[]>(
             await getQueryFrom("findBook"),
             { search, author, releaseYear, offset, limit }
@@ -99,7 +119,7 @@ export class Book {
 
         return books;
     }
-    
+
     /**
      * Makes query to db to count all books.
      * 
@@ -153,6 +173,37 @@ export class Book {
 
         return imageUrl.split(".com/")[1];
     }
+
+    /**
+     * Makes query to db to add author
+     * and returns inserted or existing id.
+     * 
+     * @param fullName Full name of author.
+     * @returns Promise to get id of inserted or existing author.
+     */
+    static async addAuthor(fullName: string): Promise<number> {
+        let result = await db.execute<ResultSetHeader>(
+            await getQueryFrom("addAuthors"),
+            { fullName }
+        );
+
+        if (result.length > 0) {
+            let [resultId] = await db.execute<RowDataPacket[]>(
+                await getQueryFrom("getAuthorIdByFullName"),
+                { fullName }
+            );
+
+            return resultId[0].id;
+        } else {
+
+            return result[0].insertId;
+        }
+    }
 }
+
+// (async () => {
+//     let authors = await db.execute<RowDataPacket[]>("SHOW TABLES LIKE 'authors'");
+//     console.log(authors[0].length > 0);
+// })()
 
 export default Book;

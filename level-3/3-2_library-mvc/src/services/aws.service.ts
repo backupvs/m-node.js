@@ -18,16 +18,16 @@ export const uploadImage = async (imageFile: Express.Multer.File) => {
         ContentType: imageFile.mimetype
     };
 
-    return { promise: s3.send(new PutObjectCommand(params)), generatedName: name};
+    return { promise: s3.send(new PutObjectCommand(params)), generatedName: name };
 };
 
-export const deleteImage = async(name: string) => {
+export const deleteImage = async (name: string) => {
     const params = {
         Bucket: process.env.BUCKET_NAME,
         Key: name,
     };
 
     return s3.send(new DeleteObjectCommand(params));
-}
+};
 
 export const awsService = { uploadImage, deleteImage };

@@ -32,6 +32,9 @@ postBookForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const formData = new FormData(postBookForm);
+    const authors = new Array(5).fill(undefined).map((a, i) => formData.get(`author${i + 1}`));
+    
+    formData.append("authors", JSON.stringify(authors));
 
     try {
         const response = await fetch("http://localhost:3000/books/add", { method: "POST", body: formData })
