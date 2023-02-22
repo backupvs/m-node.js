@@ -23,7 +23,7 @@ export class Book {
      */
     async save(): Promise<number> {
         const [result] = await db.execute<ResultSetHeader>(
-            await getQueryFrom("addBook"),
+            await getQueryFrom("add/addBook"),
             [
                 this.title,
                 this.about,
@@ -45,7 +45,7 @@ export class Book {
      */
     async addAssociation(authorId: string) {
         return db.execute(
-            await getQueryFrom("addAssociation"),
+            await getQueryFrom("add/addAssociation"),
             { authorId, bookId: this.id }
         );
     }
@@ -58,7 +58,7 @@ export class Book {
      */
     static async findById(id: string) {
         const [book] = await db.execute<RowDataPacket[]>(
-            await getQueryFrom("getBookById"),
+            await getQueryFrom("get/getBookById"),
             [id]
         );
 
@@ -74,10 +74,10 @@ export class Book {
      */
     static async deleteById(id: string): Promise<void> {
         db.execute<RowDataPacket[]>(
-            await getQueryFrom("deleteBookById"),
+            await getQueryFrom("delete/deleteBookById"),
             [id]
         ).then(async () => db.execute<RowDataPacket[]>(
-            await getQueryFrom("deleteUnrelatedAuthor"),
+            await getQueryFrom("delete/deleteUnrelatedAuthor"),
             [id]
         ));
     }
@@ -98,7 +98,7 @@ export class Book {
         limit: string
     ) {
         const [result] = await db.execute<RowDataPacket[]>(
-            await getQueryFrom("findBook"),
+            await getQueryFrom("get/findBook"),
             { search, author, releaseYear, offset, limit }
         );
 
@@ -113,7 +113,7 @@ export class Book {
      */
     static async getAllBooks(offset: string, limit: string) {
         const [books] = await db.execute<RowDataPacket[]>(
-            await getQueryFrom("getAllBooks"),
+            await getQueryFrom("get/getAllBooks"),
             { offset, limit }
         );
 
@@ -127,7 +127,7 @@ export class Book {
      */
     static async getNumberOfAll() {
         const [countResult] = await db.execute<RowDataPacket[]>(
-            await getQueryFrom("getBooksCount")
+            await getQueryFrom("get/getBooksCount")
         );
         return countResult[0].count;
     }
@@ -140,7 +140,7 @@ export class Book {
      */
     static async increaseViewsById(id: string) {
         return db.execute(
-            await getQueryFrom("increaseViewsCount"),
+            await getQueryFrom("analytics/increaseViewsCount"),
             [id]
         );
     }
@@ -153,7 +153,7 @@ export class Book {
      */
     static async increaseWantClicksById(id: string) {
         return db.execute(
-            await getQueryFrom("increaseWantClicksCount"),
+            await getQueryFrom("analytics/increaseWantClicksCount"),
             [id]
         );
     }
@@ -166,7 +166,7 @@ export class Book {
      */
     static async getImageNameById(id: string): Promise<string> {
         const [result] = await db.execute<RowDataPacket[]>(
-            await getQueryFrom("getImageUrlById"),
+            await getQueryFrom("get/getImageUrlById"),
             [id]
         );
         const imageUrl = result[0]["image_url"];
@@ -183,13 +183,13 @@ export class Book {
      */
     static async addAuthor(fullName: string): Promise<number> {
         let result = await db.execute<ResultSetHeader>(
-            await getQueryFrom("addAuthors"),
+            await getQueryFrom("add/addAuthors"),
             { fullName }
         );
 
         if (result.length > 0) {
             let [resultId] = await db.execute<RowDataPacket[]>(
-                await getQueryFrom("getAuthorIdByFullName"),
+                await getQueryFrom("get/getAuthorIdByFullName"),
                 { fullName }
             );
 
@@ -200,10 +200,5 @@ export class Book {
         }
     }
 }
-
-// (async () => {
-//     let authors = await db.execute<RowDataPacket[]>("SHOW TABLES LIKE 'authors'");
-//     console.log(authors[0].length > 0);
-// })()
 
 export default Book;
