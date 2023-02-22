@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import RequestError from "@errors/RequestError";
-import { logger } from "@services/logger.service";
+import { logger } from "@utils/logger.util";
 
 export const errorHandler = (error: RequestError, req: Request, res: Response, next: NextFunction) => {
     const status = error.status || 500;
@@ -10,7 +10,7 @@ export const errorHandler = (error: RequestError, req: Request, res: Response, n
         message = "Something went wrong";
     }
 
-    res.status(status).send({ status, error: message });
+    res.status(status).json({ status, error: message, details: error.details || {} });
 }
 
 export default errorHandler;

@@ -1,13 +1,13 @@
 import "module-alias/register";
 import "dotenv/config";
 import path from "path";
-import express, { NextFunction } from "express";
+import express from "express";
 import bodyParser from "body-parser";
 import rootRouter from "@routes/root.router";
 import booksRouter from "@routes/books.router";
 import adminRouter from "@routes/admin.router";
-import { checkMigration } from "@services/db.service";
-import { logger } from "@services/logger.service";
+import { checkMigration } from "@services/mysql2.service";
+import { logger } from "@utils/logger.util";
 import errorHandler from "@middlewares/errorHandler";
 import renderNotFound from "@middlewares/renderNotFound";
 

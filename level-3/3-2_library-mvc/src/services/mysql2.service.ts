@@ -1,6 +1,6 @@
 import mysql, { RowDataPacket } from "mysql2/promise";
-import { getQueryFrom } from "./sqlreader.service";
-import { logger } from "./logger.service";
+import { getQueryFrom } from "@utils/sqlreader.util";
+import { logger } from "@utils/logger.util";
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Book from "@models/Book.model";
 import { awsService } from "@services/aws.service";
 import RequestError from "@errors/RequestError";
-import { RowDataPacket } from "mysql2";
+import { validateBook } from "@middlewares/bookValidator";
 
 export const getBookById = async (req: Request, res: Response) => {
     const [book] = await Book.findById(req.params.id);
@@ -21,6 +21,14 @@ export const increaseCounter = async (req: Request, res: Response, next: NextFun
 
 export const addBook = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.file) return next(new RequestError(400, "Image was not provided"));
+    req.body.authors = JSON.parse(req.body.authors);
+
+    const { error } = validateBook(req.body);
+    if (error) {
+        console.log(error.details);
+        return next(new RequestError(400, "Book validation error", error.details)); 
+    }
+    
 
     const { generatedName } = await awsService.uploadImage(req.file);
     const book = new Book(
@@ -30,12 +38,9 @@ export const addBook = async (req: Request, res: Response, next: NextFunction) =
         req.body.bookYear,
         req.body.pages
     );
-
     await book.save();
-    const authors = JSON.parse(req.body.authors);
 
-    for (let author of authors) {
-        if (!author) continue;
+    for (let author of req.body.authors) {
         const authorId = await Book.addAuthor(author);
         await book.addAssociation(authorId.toString());
     }

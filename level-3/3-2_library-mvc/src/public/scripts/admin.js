@@ -32,22 +32,35 @@ async function handleBookFormSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(postBookForm);
-    const authors = new Array(5).fill(undefined).map((a, i) => formData.get(`author${i + 1}`));
+    const authors = new Array(5).fill(undefined).map((a, i) => {
+        const author = formData.get(`author${i + 1}`);
+        formData.delete(`author${i + 1}`);
+        return author;
+    }).filter(author => author !== "");
 
     formData.append("authors", JSON.stringify(authors));
 
+    console.log("hello");
     const response = await fetch("http://localhost:3000/books/add", { method: "POST", body: formData });
     const jsonResponse = await response.json();
-    jsonResponse.ok ? alert("Книгу успішно додано") : alert("Книгу не було додано");
-    window.location.reload();
+    if (jsonResponse.ok) {
+        alert("Книгу успішно додано");
+        window.location.reload();
+    } else {
+        alert("Книгу не було додано");
+    }
 }
 
 // Delete book by id
 async function deleteBook(id) {
     const response = await fetch(`http://localhost:3000/books/delete?id=${id}`, { method: "DELETE" })
     const jsonResponse = await response.json();
-    jsonResponse.ok ? alert("Книгу успішно видалено") : alert("Книгу не було видалено");
-    window.location.reload();
+    if (jsonResponse.ok) {
+        alert("Книгу успішно видалено");
+        window.location.reload();
+    } else {
+        alert("Книгу не було видалено");
+    }
 }
 
 /* Fetch admin page with bad credentials to log out

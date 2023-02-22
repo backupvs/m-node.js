@@ -1,5 +1,5 @@
-import db from "@services/db.service";
-import { getQueryFrom } from "@services/sqlreader.service";
+import db from "@services/mysql2.service";
+import { getQueryFrom } from "@utils/sqlreader.util";
 import { RowDataPacket } from "mysql2/promise";
 
 export class User {

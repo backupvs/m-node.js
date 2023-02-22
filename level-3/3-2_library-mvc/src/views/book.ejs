@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
         crossorigin="anonymous" />
     <link rel="shortcut icon" href="http://localhost:3000/favicon.png">
+    
+    <script src="http://localhost:3000/scripts/book.js" defer></script>
 </head>
 
 <body>
@@ -67,20 +69,6 @@
     </section>
 
     <%- include("./partials/_footer.ejs") %>
-
-    <script>
-        window.onload = () => increaseCounter("view");
-
-        function increaseCounter(counter) {
-            fetch("http://localhost:3000/books/<%= book.id %>", {
-                method: "PATCH",
-                body: JSON.stringify({ counter }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-        }
-    </script>
 </body>
 
 </html>

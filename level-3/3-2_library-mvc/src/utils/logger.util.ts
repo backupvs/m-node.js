@@ -1,5 +1,3 @@
-import RequestError from "@errors/RequestError";
-
 export const info = (message: string) => {
     const timestamp = new Date().toLocaleString();
     setImmediate(() => {

@@ -1,5 +1,5 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { getRandomName } from "./random.service";
+import { getRandomName } from "@utils/random.util";
 
 const s3 = new S3Client({
     credentials: {
