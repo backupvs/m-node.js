@@ -2,25 +2,25 @@ import { NextFunction, Request, Response } from "express";
 import Book from "@models/Book.model";
 import { awsService } from "@services/aws.service";
 import RequestError from "@errors/RequestError";
+import { RowDataPacket } from "mysql2";
 
 export const getBookById = async (req: Request, res: Response) => {
     const [book] = await Book.findById(req.params.id);
     if (!book) return res.render("not_found");
-
+    await Book.increaseViewsById(req.params.id);
     res.render("book", { book });
 };
 
 export const increaseCounter = async (req: Request, res: Response, next: NextFunction) => {
     switch (req.body.counter) {
         case "want": await Book.increaseWantClicksById(req.params.id); break;
-        case "view": await Book.increaseViewsById(req.params.id); break;
         default: return next(new RequestError(400, "Bad counter name"));
     }
     res.json({ ok: true });
 };
 
-export const addBook = async (req: Request, res: Response) => {
-    if (!req.file) return res.status(400).json({ error: "image was not provided" });
+export const addBook = async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.file) return next(new RequestError(400, "Image was not provided"));
 
     const { generatedName } = await awsService.uploadImage(req.file);
     const book = new Book(
@@ -43,19 +43,15 @@ export const addBook = async (req: Request, res: Response) => {
     res.status(201).json({ ok: true });
 };
 
-export const deleteBook = async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.query.id) next();
-    if (Number.isNaN(+req.query.id!)) return res.json({ err: "id must be a number" });
+export const deleteBookById = async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.query.id) return next();
+    if (Number.isNaN(+req.query.id!)) return next(new RequestError(400, "ID must be a number"));
 
-    try {
-        const imageName = await Book.getImageNameById(req.query.id!.toString());
-        await Book.deleteById(req.query.id!.toString());
-        await awsService.deleteImage(imageName);
-        res.status(200).json({ ok: true });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "internal error" });
-    }
+    const imageName = await Book.getImageNameById(req.query.id!.toString());
+    await Book.deleteById(req.query.id!.toString());
+    await awsService.deleteImage(imageName);
+
+    res.status(200).json({ ok: true });
 };
 
-export const booksController = { getBookById, increaseCounter, addBook, deleteBook };
+export const booksController = { getBookById, increaseCounter, addBook, deleteBookById };

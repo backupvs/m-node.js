@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 export const renderNotFound = (req: Request, res: Response) => {
-    res.render("not_found");
+    res.status(404).render("not_found");
 }
 
 export default renderNotFound;

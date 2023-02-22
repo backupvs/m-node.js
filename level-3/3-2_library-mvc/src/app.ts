@@ -1,7 +1,7 @@
 import "module-alias/register";
 import "dotenv/config";
 import path from "path";
-import express from "express";
+import express, { NextFunction } from "express";
 import bodyParser from "body-parser";
 import rootRouter from "@routes/root.router";
 import booksRouter from "@routes/books.router";
