@@ -5,9 +5,7 @@ import multer from "multer";
 import basicAuth from "@middlewares/basicAuth";
 
 const router = Router();
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/:id", idValidator, booksController.getBookById);
 router.patch("/:id", idValidator, booksController.increaseCounter);

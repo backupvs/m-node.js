@@ -1,19 +1,20 @@
 import { NextFunction, Request, Response } from "express";
 import Book from "@models/Book.model";
 import { awsService } from "@services/aws.service";
+import RequestError from "@errors/RequestError";
 
 export const getBookById = async (req: Request, res: Response) => {
     const [book] = await Book.findById(req.params.id);
-    if (!book) return res.status(404).send('404 Not found');
+    if (!book) return res.render("not_found");
 
     res.render("book", { book });
 };
 
-export const increaseCounter = async (req: Request, res: Response) => {
+export const increaseCounter = async (req: Request, res: Response, next: NextFunction) => {
     switch (req.body.counter) {
         case "want": await Book.increaseWantClicksById(req.params.id); break;
         case "view": await Book.increaseViewsById(req.params.id); break;
-        default: return res.status(400).json({ error: "bad counter" });
+        default: return next(new RequestError(400, "Bad counter name"));
     }
     res.json({ ok: true });
 };

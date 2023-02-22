@@ -3,16 +3,15 @@ import bcrypt from "bcrypt";
 import { User } from "@models/User.model";
 
 export const basicAuth = async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.get("Authorization")) return sendError(res);
+    if (!req.get("Authorization")) return sendBadAuth(res);
 
     const [username, password] = parseCredentials(req.get("Authorization")!);
-    if (!await compareCredentials(username, password)) return sendError(res);
+    if (!await compareCredentials(username, password)) return sendBadAuth(res);
 
-    res.status(200);
     next();
 };
 
-function sendError(res: Response) {
+function sendBadAuth(res: Response) {
     res.set("WWW-Authenticate", "Basic").sendStatus(401);
 }
 
@@ -25,13 +24,11 @@ function parseCredentials(credentials: string) {
     return [username, password];
 }
 
-
-
 async function compareCredentials(username: string, password: string) {
     const [admin] = await User.getAdminByUsername(username);
     if (!admin) return false;
-    const result = await bcrypt.compare(password, admin.password);
-    return result;
+
+    return await bcrypt.compare(password, admin.password);
 }
 
 export default basicAuth;

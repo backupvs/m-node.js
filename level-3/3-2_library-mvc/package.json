@@ -18,7 +18,8 @@
     "@configs": "dist/configs",
     "@services": "dist/services",
     "@models": "dist/models",
-    "@middlewares": "dist/middlewares"
+    "@middlewares": "dist/middlewares",
+    "@errors": "dist/errors"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.272.0",

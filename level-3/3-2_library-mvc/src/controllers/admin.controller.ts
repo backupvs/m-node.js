@@ -10,11 +10,10 @@ export const showBooks = async (req: Request, res: Response) => {
 
     if (currentPage > totalPages) currentPage = totalPages;
     if (currentPage < 1) currentPage = 1;
-    
+
     const offset = (currentPage - 1) * LIMIT;
 
     const books = await Book.getAllBooks(offset.toString(), LIMIT.toString());
-
     res.render("admin", { books, currentPage, totalPages });
 };
 
