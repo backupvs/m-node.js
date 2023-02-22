@@ -69,79 +69,6 @@ html, body {
       .header-wrapper .navbar .main-menu .navbar-form #search {
         width: 100%;
         padding-left: 30px; }
-      .header-wrapper .navbar .main-menu .navbar-form .bAutoComplete {
-        height: auto;
-        display: none;
-        text-align: left;
-        background-color: white;
-        box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.7); }
-      .header-wrapper .navbar .main-menu .navbar-form #search_btn {
-        margin-left: 10px;
-        display: none; }
-      .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete {
-        padding: 10px 0;
-        width: 100%;
-        position: absolute;
-        left: 0;
-        top: 56px;
-        z-index: 2;
-        display: none; }
-        .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemMore {
-          text-align: right; }
-          .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemMore a {
-            margin: 0;
-            display: block !important;
-            text-align: right;
-            line-height: 0;
-            padding: 10px 0; }
-            .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemMore a span {
-              font-size: 12px;
-              color: #34b96c;
-              border-bottom: 1px dashed #34b96c;
-              line-height: 14px; }
-              .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemMore a span:hover {
-                color: #2c3e50;
-                border-bottom: 1px dashed #2c3e50; }
-        .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemList {
-          line-height: 0;
-          margin: 5px 0;
-          opacity: 0.5; }
-          .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemList:last-child a {
-            border-bottom: 0; }
-          .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemList a {
-            background: none;
-            padding: 5px 8px;
-            margin: 0;
-            color: #555;
-            line-height: 14px;
-            display: inline-block;
-            text-decoration: none;
-            cursor: pointer;
-            font-size: 12px;
-            width: 100%;
-            border-bottom: 1px solid lightgrey; }
-            .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemList a .infoBook .title {
-              line-height: 25px;
-              font-size: 16px;
-              font-weight: 500; }
-            .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemList a .col-my-2 {
-              position: relative;
-              min-height: 1px;
-              padding-right: 5px;
-              padding-left: 5px;
-              float: left;
-              width: 7%; }
-            .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemList a .col-my-10 {
-              position: relative;
-              min-height: 1px;
-              padding-right: 5px;
-              padding-left: 5px;
-              float: left;
-              width: 93%; }
-            .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemList a img {
-              max-height: 50px; }
-          .header-wrapper .navbar .main-menu .navbar-form .mSearchAutoComplete .eAutoComplete_itemList:hover {
-            opacity: 1; }
 
 /*-------------------------------- .main-wrapper  ---------------------------*/
 .main-wrapper {
@@ -238,8 +165,6 @@ html, body {
         .main-wrapper .book_block #id .item img {
           width: 220px;
           height: auto; }
-        .main-wrapper .book_block #id .item .rating {
-          text-align: center; }
         .main-wrapper .book_block #id .item hr {
           margin: 5px 0; }
       .main-wrapper .book_block #id .info .bookInfo {
@@ -304,27 +229,6 @@ html, body {
       .main-wrapper .book_block #id .bookDescription p:first-letter {
         font-size: 22px;
         color: #27ae60; }
-  .main-wrapper .found {
-    margin: 60px 15px 20px 15px;
-    box-shadow: 0 1px 0 0 rgba(195, 195, 195, 0.27); }
-    .main-wrapper .found .text_found, .main-wrapper .found .number_found {
-      font-weight: bold;
-      padding: 0 5px; }
-    .main-wrapper .found .breadcrumb {
-      padding: 8px 0;
-      margin-bottom: 0;
-      list-style: none;
-      background-color: inherit;
-      border-radius: 4px;
-      font-size: 12px; }
-      .main-wrapper .found .breadcrumb li a {
-        color: #27ae60; }
-        .main-wrapper .found .breadcrumb li a:hover {
-          color: #2c3e50; }
-  .main-wrapper .top {
-    padding-top: 40px; }
-    .main-wrapper .top .table-hover tr {
-      cursor: pointer; }
   .main-wrapper #id {
     margin-top: 20px; }
     .main-wrapper #id #bookImg {
@@ -332,11 +236,6 @@ html, body {
       .main-wrapper #id #bookImg img {
         width: 220px;
         height: auto; }
-      .main-wrapper #id #bookImg .blokBtnAdmin {
-        padding: 10px 0;
-        text-align: center; }
-        .main-wrapper #id #bookImg .blokBtnAdmin .btn {
-          margin: 0 3px; }
     .main-wrapper #id .bookInfo {
       color: #2c3e50;
       font-size: 14px; }
@@ -351,43 +250,6 @@ html, body {
         width: 80%; }
       .main-wrapper #id .bookInfo .properties {
         padding: 0 5px 0 10px; }
-      .main-wrapper #id .bookInfo .btnBook {
-        text-align: center; }
-    .main-wrapper #id .orderBlock {
-      text-align: center;
-      background-color: #fff;
-      border: 1px solid #e1e1e1;
-      box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.15);
-      padding: 30px 20px 35px 20px;
-      border-radius: 3px; }
-      .main-wrapper #id .orderBlock .busyBook, .main-wrapper #id .orderBlock .freeBook, .main-wrapper #id .orderBlock .response {
-        display: none; }
-        .main-wrapper #id .orderBlock .busyBook .youEmail, .main-wrapper #id .orderBlock .freeBook .youEmail, .main-wrapper #id .orderBlock .response .youEmail {
-          color: #27ae60; }
-      .main-wrapper #id .orderBlock .glyphicon-ok, .main-wrapper #id .orderBlock .glyphicon-remove {
-        display: none; }
-      .main-wrapper #id .orderBlock .termD-group {
-        max-width: 50%;
-        float: right; }
-      .main-wrapper #id .orderBlock .updateBookAction {
-        text-align: right; }
-        .main-wrapper #id .orderBlock .updateBookAction span {
-          position: relative;
-          padding: 10px;
-          top: -2px; }
-      .main-wrapper #id .orderBlock .form-queue {
-        padding: 2px 0; }
-      .main-wrapper #id .orderBlock i.fa {
-        width: 20px; }
-  .main-wrapper #book_save {
-    float: right; }
-  .main-wrapper #canvas {
-    border: 2px solid #2cc56d;
-    border-radius: 10px; }
-
-#loading {
-  text-align: center;
-  display: none; }
 
 /*------------------------------- Modal dialog  --------------------------*/
 #want-info {
@@ -604,24 +466,6 @@ html, body {
 @media (min-width: 320px) and (max-width: 767px) {
   .form-group {
     left: 10%; }
-  .sidebar2 a {
-    font-size: 50% !important; }
-  .sidebar2 .btn-success {
-    font-size: 50% !important; }
-  .table-hover {
-    font-size: 30% !important; }
-  .mSearchAutoComplete .eAutoComplete_itemList {
-    height: auto !important; }
-    .mSearchAutoComplete .eAutoComplete_itemList a {
-      padding: 10px 0 !important; }
-    .mSearchAutoComplete .eAutoComplete_itemList .col-my-2 {
-      display: none; }
-    .mSearchAutoComplete .eAutoComplete_itemList img {
-      display: none; }
-    .mSearchAutoComplete .eAutoComplete_itemList .title {
-      font-size: 14px !important; }
-    .mSearchAutoComplete .eAutoComplete_itemList .author {
-      font-size: 12px !important; }
   .titleBook {
     width: 100% !important;
     text-align: center; }

@@ -3,71 +3,52 @@ const image = document.getElementById("imgPreview"); // Input image preview
 const imgInput = document.getElementById("imgInput"); // File input for image
 const clearImg = document.getElementById("clearImg"); // Button to clear preview and input
 
+imgInput.addEventListener("change", handleImageSelection);
+clearImg.addEventListener("click", clearImagePlace);
+postBookForm.addEventListener("submit", handleBookFormSubmit);
+
 /******************************** Image input ********************************/
 
-const showClearImgIcon = () => clearImg.style.visibility = "visible";
-const hideClearImgIcon = () => clearImg.style.visibility = "hidden";
-
 // Show image preview when selected
-imgInput.onchange = (event) => {
+function handleImageSelection(event) {
     const [file] = imgInput.files;
     if (file) {
         image.src = URL.createObjectURL(file);
-        showClearImgIcon();
+        clearImg.style.visibility = "visible"
     }
 }
 
 // Clear preview and file input
-function clearImgPlace() {
-    hideClearImgIcon();
+function clearImagePlace() {
+    clearImg.style.visibility = "hidden"
     image.src = "";
     imgInput.value = "";
 }
 
-
 /******************************** Books operations ********************************/
 
 // Submit a book adding form
-postBookForm.addEventListener("submit", async (event) => {
+async function handleBookFormSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(postBookForm);
     const authors = new Array(5).fill(undefined).map((a, i) => formData.get(`author${i + 1}`));
-    
+
     formData.append("authors", JSON.stringify(authors));
 
-    try {
-        const response = await fetch("http://localhost:3000/books/add", { method: "POST", body: formData })
-        const jsonResponse = await response.json();
-        jsonResponse.ok ? notifySuccess("Книгу успішно додано") : notifyFailure("Книгу не було додано");
-        window.location.reload();
-    } catch (error) {
-        console.log(error);
-    }
-});
+    const response = await fetch("http://localhost:3000/books/add", { method: "POST", body: formData });
+    const jsonResponse = await response.json();
+    jsonResponse.ok ? alert("Книгу успішно додано") : alert("Книгу не було додано");
+    window.location.reload();
+}
 
 // Delete book by id
 async function deleteBook(id) {
-    try {
-        const response = await fetch(`http://localhost:3000/books/delete?id=${id}`, { method: "DELETE" })
-        const jsonResponse = await response.json();
-        jsonResponse.ok ? notifySuccess("Книгу успішно видалено") : notifyFailure("Книгу не було видалено");
-        window.location.reload();
-    } catch (error) {
-        console.log(error);
-    }
+    const response = await fetch(`http://localhost:3000/books/delete?id=${id}`, { method: "DELETE" })
+    const jsonResponse = await response.json();
+    jsonResponse.ok ? alert("Книгу успішно видалено") : alert("Книгу не було видалено");
+    window.location.reload();
 }
-
-/******************************** Notification ********************************/
-
-function notifySuccess(text) {
-    alert(text);
-}
-
-function notifyFailure(text) {
-    alert(text);
-}
-
 
 /* Fetch admin page with bad credentials to log out
  * and redirect to home page.
