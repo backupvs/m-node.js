@@ -9,4 +9,5 @@ JOIN (
   ) numbers
   WHERE CHAR_LENGTH(author) - CHAR_LENGTH(REPLACE(author, ',', '')) >= numbers.n - 1
 ) t ON b.id = t.id
-JOIN authors a ON a.full_name = t.author_name;
+JOIN authors a ON a.full_name = t.author_name
+WHERE b.deleted_at IS NULL AND a.deleted_at IS NULL;

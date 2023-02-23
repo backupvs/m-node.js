@@ -8,7 +8,7 @@ export const info = (message: string) => {
 export const error = (error: any) => {
     const timestamp = new Date().toLocaleString();
     setImmediate(() => {
-        console.log(`[ERROR] ${timestamp} ${error.message || "Unknown"}`);
+        console.log(`[ERROR] ${timestamp} ${error || "Unknown"}`);
     });
 };
 

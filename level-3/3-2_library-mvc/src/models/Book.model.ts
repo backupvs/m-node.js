@@ -74,10 +74,10 @@ export class Book {
      */
     static async deleteById(id: string): Promise<void> {
         db.execute<RowDataPacket[]>(
-            await getQueryFrom("delete/deleteBookById"),
+            await getQueryFrom("delete/softDeleteBookById"),
             [id]
         ).then(async () => db.execute<RowDataPacket[]>(
-            await getQueryFrom("delete/deleteUnrelatedAuthor"),
+            await getQueryFrom("delete/softDeleteUnrelatedAuthor"),
             [id]
         ));
     }

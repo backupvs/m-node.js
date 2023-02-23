@@ -1,5 +1,6 @@
 CREATE TABLE authors (
   id INT NOT NULL AUTO_INCREMENT,
   full_name VARCHAR(100) NOT NULL,
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (id)
 );

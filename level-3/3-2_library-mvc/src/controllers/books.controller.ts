@@ -26,7 +26,7 @@ export const addBook = async (req: Request, res: Response, next: NextFunction) =
     const { error } = validateBook(req.body);
     if (error) {
         console.log(error.details);
-        return next(new RequestError(400, "Book validation error", error.details)); 
+        return next(new RequestError(400, "Book validation error", error.details));
     }
     
 
@@ -54,7 +54,7 @@ export const deleteBookById = async (req: Request, res: Response, next: NextFunc
 
     const imageName = await Book.getImageNameById(req.query.id!.toString());
     await Book.deleteById(req.query.id!.toString());
-    await awsService.deleteImage(imageName);
+    await awsService.softDeleteImage(imageName);
 
     res.status(200).json({ ok: true });
 };
