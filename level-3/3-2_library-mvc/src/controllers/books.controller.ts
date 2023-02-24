@@ -53,7 +53,7 @@ export const deleteBookById = async (req: Request, res: Response, next: NextFunc
     if (Number.isNaN(+req.query.id!)) return next(new RequestError(400, "ID must be a number"));
 
     const imageName = await Book.getImageNameById(req.query.id!.toString());
-    await Book.deleteById(req.query.id!.toString());
+    await Book.softDeleteById(req.query.id!.toString());
     await awsService.softDeleteImage(imageName);
 
     res.status(200).json({ ok: true });

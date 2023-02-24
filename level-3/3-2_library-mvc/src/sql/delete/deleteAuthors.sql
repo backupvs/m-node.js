@@ -1,0 +1,2 @@
+DELETE FROM authors
+WHERE deleted_at < DATE_SUB(NOW(), INTERVAL 6 HOUR);

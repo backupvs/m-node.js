@@ -10,6 +10,7 @@ import { checkMigration } from "@services/mysql2.service";
 import { logger } from "@utils/logger.util";
 import errorHandler from "@middlewares/errorHandler";
 import renderNotFound from "@middlewares/renderNotFound";
+import { scheduler } from "@services/scheduler.service";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,4 +37,5 @@ app.use(errorHandler);
 app.listen(PORT, async () => {
     logger.info(`Start listening on port ${PORT}`);
     await checkMigration();
+    scheduler.start();
 });

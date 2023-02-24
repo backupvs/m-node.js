@@ -66,13 +66,14 @@ export class Book {
     }
 
     /**
-     * Makes query to db to delete book by id
-     * and author if it is no longer assosiated with any book.
+     * Makes query to db to soft delete book by id
+     * and author if it is no longer assosiated with any book
+     * by adding timestamp to deleted_at.
      * 
      * @param id Requested id.
-     * @returns Promise to delete book and author.
+     * @returns Promise to soft delete books.
      */
-    static async deleteById(id: string): Promise<void> {
+    static async softDeleteById(id: string): Promise<void> {
         db.execute<RowDataPacket[]>(
             await getQueryFrom("delete/softDeleteBookById"),
             [id]
@@ -83,7 +84,35 @@ export class Book {
     }
 
     /**
-     * Finds books by specified parameters 
+     * Makes query to db to delete books
+     * where deleted_at timestamp is older than 6 hours.
+     * 
+     * @returns Promise to get number of deleted books.
+     */
+    static async clearDeletedBooks(): Promise<number> {
+        const result = await db.execute<ResultSetHeader>(
+            await getQueryFrom("delete/deleteBooks")
+        );
+
+        return result[0].affectedRows;
+    }
+
+    /**
+     * Makes query to db to delete authors
+     * where deleted_at timestamp is older than 6 hours.
+     * 
+     * @returns Promise to get number of deleted authors.
+     */
+    static async clearDeletedAuthors(): Promise<number> {
+        const result = await db.execute<ResultSetHeader>(
+            await getQueryFrom("delete/deleteAuthors")
+        );
+
+        return result[0].affectedRows;
+    }
+
+    /**
+     * Finds books by specified parameters
      * and returns with specified offset and limit.
      * 
      * @param search Search string.
@@ -188,16 +217,18 @@ export class Book {
         );
 
         if (result.length > 0) {
+            await db.execute<ResultSetHeader>(
+                await getQueryFrom("delete/revertAuthorDeletingByFullName"),
+                { fullName }
+            );
             let [resultId] = await db.execute<RowDataPacket[]>(
                 await getQueryFrom("get/getAuthorIdByFullName"),
                 { fullName }
             );
-
             return resultId[0].id;
-        } else {
-
-            return result[0].insertId;
         }
+
+        return result[0].insertId;
     }
 }
 
