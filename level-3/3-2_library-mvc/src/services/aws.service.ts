@@ -7,6 +7,8 @@ import {
     PutObjectCommand
 } from "@aws-sdk/client-s3";
 import { getRandomName } from "@utils/random.util";
+import fs from "fs/promises";
+import mysqldump from "mysqldump";
 
 const SIX_HOURS = 1000 * 60 * 60 * 6;
 
@@ -21,7 +23,7 @@ const s3 = new S3Client({
 export const uploadImage = async (imageFile: Express.Multer.File) => {
     const name = getRandomName();
     const params = {
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: process.env.IMAGES_BUCKET_NAME,
         Key: name,
         Body: imageFile.buffer,
         ContentType: imageFile.mimetype
@@ -33,15 +35,15 @@ export const uploadImage = async (imageFile: Express.Multer.File) => {
 export const softDeleteImage = async (name: string) => {
     // Copy the object to the new key with undescore
     const copyParams = {
-        Bucket: process.env.BUCKET_NAME,
-        CopySource: `${process.env.BUCKET_NAME}/${name}`,
+        Bucket: process.env.IMAGES_BUCKET_NAME,
+        CopySource: `${process.env.IMAGES_BUCKET_NAME}/${name}`,
         Key: `_${Date.now()}_${name}`,
     };
     await s3.send(new CopyObjectCommand(copyParams));
 
     // Delete the original object
     const deleteParams = {
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: process.env.IMAGES_BUCKET_NAME,
         Key: name,
     };
     const deleteResponse = await s3.send(new DeleteObjectCommand(deleteParams));
@@ -58,7 +60,7 @@ export const clearDeletedImages = async () => {
     });
 
     const params = {
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: process.env.IMAGES_BUCKET_NAME,
         Delete: { Objects: toDelete, Quiet: true }
     };
 
@@ -67,16 +69,33 @@ export const clearDeletedImages = async () => {
     return toDelete.length || 0;
 };
 
+const uploadDatabaseDump = async () => {
+
+    const dumpName = `backup_${new Date().toISOString()}.sql`;
+    const dump = await fs.readFile("./temp_dump.sql")
+
+    const params = {
+        Bucket: process.env.BACKUPS_BUCKET_NAME,
+        Key: dumpName,
+        Body: dump,
+        ContentType: "application/sql"
+    };
+
+    fs.rm("./temp_dump.sql");
+
+    return { promise: s3.send(new PutObjectCommand(params)), generatedName: dumpName };
+}
+
 async function getSoftDeletedImages() {
     const listResult = await s3.send(new ListObjectsV2Command({
-        Bucket: process.env.BUCKET_NAME
+        Bucket: process.env.IMAGES_BUCKET_NAME
     }));
 
     if (listResult.Contents && listResult.Contents.length === 0) return [];
-    
+
     return listResult.Contents!
         .map(({ Key }) => ({ Key }))
         .filter(obj => obj.Key?.startsWith("_"));
 }
 
-export const awsService = { uploadImage, softDeleteImage, clearDeletedImages };
+export const awsService = { uploadImage, softDeleteImage, clearDeletedImages, uploadDatabaseDump };

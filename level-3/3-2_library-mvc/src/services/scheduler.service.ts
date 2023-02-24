@@ -2,6 +2,7 @@ import cron, { ScheduledTask } from "node-cron";
 import { logger } from "@utils/logger.util";
 import Book from "@models/Book.model";
 import { awsService } from "./aws.service";
+import { backupService } from "./backup.service";
 
 // Clean soft deleted entries and images every 6th hours.
 const cleanDeletedEntriesTask = cron.schedule("0 */6 * * *", async () => {
@@ -26,8 +27,9 @@ const cleanDeletedEntriesTask = cron.schedule("0 */6 * * *", async () => {
     scheduled: false
 });
 
-const dbBackupTask = cron.schedule("*/5 * * * * *", () => {
-    logger.info("running this every 5 seconds");
+const dbBackupTask = cron.schedule("0 0 * * *", async () => {
+    const generatedName = await backupService.makeDatabaseBackup();
+    logger.info(`Made backup with name: ${generatedName}`);
 }, {
     scheduled: false
 });
@@ -48,6 +50,6 @@ const initStart = (tasks: { task: ScheduledTask, name: string }[]) => {
 export const scheduler = {
     start: initStart([
         { task: cleanDeletedEntriesTask, name: "Cleaning deleted entries" },
-        // { task: dbBackupTask, name: "Database backup" }
+        { task: dbBackupTask, name: "Database backup" }
     ])
 };
